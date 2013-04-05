@@ -66,8 +66,9 @@ class Emailaddress
 	{
 		$entityManager = $this->getEntityManager();
 
-		$emailaddress = $entityManager->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddress')
-		                              ->findOneBy(['emailaddress' => $emailaddress]);
+		$emailaddress = $entityManager
+			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddress')
+		    ->findOneBy(['emailaddress' => $emailaddress]);
 		if (null === $emailaddress) {
 			throw new \DragonJsonServer\Exception('incorrect emailaddress or password');
 		}
