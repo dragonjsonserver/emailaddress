@@ -71,6 +71,7 @@ class Emailaddress
 	 * Setzt die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param string $emailaddress
 	 * @return Emailaddress
+     * @throws \DragonJsonServer\Exception
 	 */
 	public function setEmailaddress($emailaddress)
 	{
@@ -116,11 +117,12 @@ class Emailaddress
 	 * Verifiziert das Passwort mit dem Passworthash
 	 * @param string $password
 	 * @return Emailaddress
+     * @throws \DragonJsonServer\Exception
 	 */
 	public function verifyPassword($password)
 	{
 		if (!(new \Zend\Crypt\Password\Bcrypt())->verify($password, $this->getPasswordcrypt())) {
-			throw new \DragonJsonServer\Exception('invalid login');
+			throw new \DragonJsonServer\Exception('incorrect emailaddress or password');
 		}
 		return $this;
 	}

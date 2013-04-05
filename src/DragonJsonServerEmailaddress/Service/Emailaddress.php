@@ -37,6 +37,7 @@ class Emailaddress
     /**
 	 * Entfernt die E-Mail Adressverknüpfung für den Account
 	 * @param \DragonJsonServerAccount\Entity\Account $account
+     * @throws \DragonJsonServer\Exception
 	 */
 	public function unlinkAccount(\DragonJsonServerAccount\Entity\Account $account)
 	{
@@ -56,6 +57,7 @@ class Emailaddress
 	 * @param string $emailaddress
 	 * @param string $password
 	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
+     * @throws \DragonJsonServer\Exception
 	 */
 	public function getEmailaddress($emailaddress, $password)
 	{
@@ -64,7 +66,7 @@ class Emailaddress
 		$emailaddress = $entityManager->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddress')
 		                              ->findOneBy(['emailaddress' => $emailaddress]);
 		if (null === $emailaddress) {
-			throw new \DragonJsonServer\Exception('incorrect login');
+			throw new \DragonJsonServer\Exception('incorrect emailaddress or password');
 		}
 		$emailaddress->verifyPassword($password);
 		return $emailaddress;
