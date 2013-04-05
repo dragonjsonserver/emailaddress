@@ -25,10 +25,15 @@ class Emailaddress
 	public function linkAccount($emailaddress, $password)
 	{
 		$serviceManager = $this->getServiceManager();
-		
-		$session = $serviceManager->get('Session')->getSession();
+
+		$sessionService = $serviceManager->get('Session');
+		$session = $sessionService->getSession();
 		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
-		$serviceManager->get('Emailaddress')->linkAccount($account, $emailaddress, $password);
+		$emailaddress = $serviceManager->get('Emailaddress')->linkAccount($account, $emailaddress, $password);
+		$data = $session->getData();
+		$data['emailaddress'] = $emailaddress->toArray();
+		$session->setData($data);
+		$sessionService->updateSession($session);
 	}
 	
     /**
@@ -38,10 +43,15 @@ class Emailaddress
 	public function unlinkAccount()
 	{
 		$serviceManager = $this->getServiceManager();
-		
-		$session = $serviceManager->get('Session')->getSession();
+
+		$sessionService = $serviceManager->get('Session');
+		$session = $sessionService->getSession();
 		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
 		$serviceManager->get('Emailaddress')->unlinkAccount($account);
+		$data = $session->getData();
+		unset($data['emailaddress']);
+		$session->setData($data);
+		$sessionService->updateSession($session);
 	}
 	
     /**

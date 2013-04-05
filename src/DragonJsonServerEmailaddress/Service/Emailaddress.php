@@ -22,16 +22,19 @@ class Emailaddress
 	 * @param \DragonJsonServerAccount\Entity\Account $account
 	 * @param string $emailaddress
 	 * @param string $password
+	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
 	 */
 	public function linkAccount(\DragonJsonServerAccount\Entity\Account $account, $emailaddress, $password)
 	{
 		$entityManager = $this->getEntityManager();
 
-		$entityManager->persist((new \DragonJsonServerEmailaddress\Entity\Emailaddress())
+		$emailaddress = (new \DragonJsonServerEmailaddress\Entity\Emailaddress())
 			->setAccountId($account->getAccountId())
 			->setEmailaddress($emailaddress)
-			->setPassword($password));
+			->setPassword($password);
+		$entityManager->persist($emailaddress);
 		$entityManager->flush();
+		return $emailaddress;
 	}
 	
     /**
