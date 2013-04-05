@@ -16,17 +16,16 @@ namespace DragonJsonServerEmailaddress\Entity;
  */
 class Emailaddress
 {
+	use \DragonJsonServerDoctrine\Entity\ModifiedTrait;
+	use \DragonJsonServerDoctrine\Entity\CreatedTrait;
+	use \DragonJsonServerAccount\Entity\AccountIdTrait;
+	
 	/** 
 	 * @Doctrine\ORM\Mapping\Id 
 	 * @Doctrine\ORM\Mapping\Column(type="integer")
 	 * @Doctrine\ORM\Mapping\GeneratedValue
 	 **/
 	protected $emailaddress_id;
-	
-	/** 
-	 * @Doctrine\ORM\Mapping\Column(type="integer")
-	 **/
-	protected $account_id;
 	
 	/** 
 	 * @Doctrine\ORM\Mapping\Column(type="string")
@@ -45,26 +44,6 @@ class Emailaddress
 	public function getEmailaddressId()
 	{
 		return $this->emailaddress_id;
-	}
-	
-	/**
-	 * Setzt die AccountID der E-Mail Adressverknüpfung
-	 * @param integer $account_id
-	 * @return Emailaddress
-	 */
-	public function setAccountId($account_id)
-	{
-		$this->account_id = $account_id;
-		return $this;
-	}
-	
-	/**
-	 * Gibt die AccountID der E-Mail Adressverknüpfung zurück
-	 * @return integer
-	 */
-	public function getAccountId()
-	{
-		return $this->account_id;
 	}
 	
 	/**
@@ -144,6 +123,8 @@ class Emailaddress
 	{
 		return [
 			'emailaddress_id' => $this->getEmailaddressId(),
+			'modified' => $this->getModified(),
+			'created' => $this->getCreated(),
 			'account_id' => $this->getAccountId(),
 			'emailaddress' => $this->getEmailaddress(),
 		];
