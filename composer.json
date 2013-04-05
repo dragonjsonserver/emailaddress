@@ -1,6 +1,6 @@
 {
     "name": "dragonprojects/dragonjsonserveremailaddress",
-    "description": "Extension for DragonJsonServer to handle emailaddresses",
+    "description": "Extension for DragonJsonServer to link emailaddresses to accounts",
     "license": "BSD-3-Clause",
     "authors": [
         {
