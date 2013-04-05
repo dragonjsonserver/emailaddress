@@ -64,11 +64,46 @@ class Emailaddress
 	{
 		$serviceManager = $this->getServiceManager();
 
-		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddress($emailaddress, $password);
+		$emailaddress = $serviceManager->get('Emailaddress')
+			->getEmailaddressByEmailaddressAndPassword($emailaddress, $password);
 		$account = $serviceManager->get('Account')->getAccount($emailaddress->getAccountId());
 		$serviceSession = $serviceManager->get('Session');
 		$session = $serviceSession->createSession($account, ['emailaddress' => $emailaddress->toArray()]);
 		$serviceSession->setSession($session);
 		return $session->toArray();
+	}
+	
+	/**
+	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
+	 * @param string $newemailaddress
+	 * @authenticate
+	 */
+	public function changeEmailaddress($newemailaddress)
+	{
+		$serviceManager = $this->getServiceManager();
+		
+		$sessionService = $serviceManager->get('Session');
+		$session = $sessionService->getSession();
+		$serviceManager->get('Emailaddress')->changeEmailaddress($session->getAccountId(), $newemailaddress);
+		$data = $session->getData();
+		if (isset($data['emailaddress'])) {
+			$data['emailaddress']['emailaddress'] = $newemailaddress;
+			$session->setData($data);
+			$sessionService->updateSession($session);
+		}
+	}
+	
+	/**
+	 * Ändert das Passwort der E-Mail Adressverknüpfung
+	 * @param string $newpassword
+	 * @authenticate
+	 */
+	public function changePassword($newpassword)
+	{
+		$serviceManager = $this->getServiceManager();
+		
+		$sessionService = $serviceManager->get('Session');
+		$session = $sessionService->getSession();
+		$serviceManager->get('Emailaddress')->changePassword($session->getAccountId(), $newpassword);
 	}
 }

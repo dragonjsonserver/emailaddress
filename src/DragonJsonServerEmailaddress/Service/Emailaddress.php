@@ -69,13 +69,32 @@ class Emailaddress
 	}
 	
 	/**
+	 * Gibt die E-Mail Adresse zur übergebenen AccountID zurück
+	 * @param integer $account_id
+	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
+     * @throws \DragonJsonServer\Exception
+	 */
+	public function getEmailaddressByAccountId($account_id)
+	{
+		$entityManager = $this->getEntityManager();
+
+		$emailaddress = $entityManager
+			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddress')
+		    ->findOneBy(['account_id' => $account_id]);
+		if (null === $emailaddress) {
+			throw new \DragonJsonServer\Exception('incorrect account_id');
+		}
+		return $emailaddress;
+	}
+	
+	/**
 	 * Gibt die E-Mail Adresse der übergebenen E-Mail Adressverknüpfung zurück
 	 * @param string $emailaddress
 	 * @param string $password
 	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
      * @throws \DragonJsonServer\Exception
 	 */
-	public function getEmailaddress($emailaddress, $password)
+	public function getEmailaddressByEmailaddressAndPassword($emailaddress, $password)
 	{
 		$entityManager = $this->getEntityManager();
 
@@ -92,5 +111,35 @@ class Emailaddress
 				->setEmailaddress($emailaddress)
 		);
 		return $emailaddress;
+	}
+	
+	/**
+	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
+	 * @param integer $account_id
+	 * @param string $newemailaddress
+	 */
+	public function changeEmailaddress($account_id, $newemailaddress)
+	{
+		$entityManager = $this->getEntityManager();
+		
+		$emailaddress = $this->getEmailaddressByAccountId($account_id);
+		$emailaddress->setEmailaddress($newemailaddress);
+		$entityManager->persist($emailaddress);
+		$entityManager->flush();
+	}
+	
+	/**
+	 * Ändert das Passwort der E-Mail Adressverknüpfung
+	 * @param integer $account_id
+	 * @param string $newpassword
+	 */
+	public function changePassword($account_id, $newpassword)
+	{
+		$entityManager = $this->getEntityManager();
+		
+		$emailaddress = $this->getEmailaddressByAccountId($account_id);
+		$emailaddress->setPassword($newpassword);
+		$entityManager->persist($emailaddress);
+		$entityManager->flush();
 	}
 }
