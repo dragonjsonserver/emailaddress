@@ -15,6 +15,7 @@ namespace DragonJsonServerEmailaddress\Service;
 class Emailaddress
 {
     use \DragonJsonServer\ServiceManagerTrait;
+	use \DragonJsonServer\EventManagerTrait;
 	use \DragonJsonServerDoctrine\EntityManagerTrait;
 	
     /**
@@ -34,6 +35,12 @@ class Emailaddress
 			->setPassword($password);
 		$entityManager->persist($emailaddress);
 		$entityManager->flush();
+		$this->getEventManager()->trigger(
+			(new \DragonJsonServerEmailaddress\Event\LinkAccount())
+				->setTarget($this)
+				->setAccount($account)
+				->setEmailaddress($emailaddress)
+		);
 		return $emailaddress;
 	}
 	
@@ -51,6 +58,12 @@ class Emailaddress
 		if (null === $emailaddress) {
 			throw new \DragonJsonServer\Exception('no emailaddress found');
 		}
+		$this->getEventManager()->trigger(
+			(new \DragonJsonServerEmailaddress\Event\UnlinkAccount())
+				->setTarget($this)
+				->setAccount($account)
+				->setEmailaddress($emailaddress)
+		);
 		$entityManager->remove($emailaddress);
 		$entityManager->flush();
 	}
@@ -73,6 +86,11 @@ class Emailaddress
 			throw new \DragonJsonServer\Exception('incorrect emailaddress or password');
 		}
 		$emailaddress->verifyPassword($password);
+		$this->getEventManager()->trigger(
+			(new \DragonJsonServerEmailaddress\Event\Login())
+				->setTarget($this)
+				->setEmailaddress($emailaddress)
+		);
 		return $emailaddress;
 	}
 }
