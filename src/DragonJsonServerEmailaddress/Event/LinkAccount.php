@@ -14,10 +14,6 @@ namespace DragonJsonServerEmailaddress\Event;
  */
 class LinkAccount extends \Zend\EventManager\Event
 {
-	use \DragonJsonServer\ServiceManagerTrait { 
-		getServiceManager as public; 
-	}
-	
 	/**
 	 * @var string
 	 */
