@@ -104,7 +104,7 @@ class Emailaddress
 			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddress')
 		    ->findOneBy(['emailaddress' => $emailaddress]);
 		if (null === $emailaddress) {
-			throw new \DragonJsonServer\Exception('incorrect emailaddress or password');
+			throw new \DragonJsonServer\Exception('incorrect emailaddress');
 		}
 		$emailaddress->verifyPassword($password);
 		$this->getEventManager()->trigger(
