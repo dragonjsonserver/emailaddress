@@ -123,8 +123,8 @@ class Emailaddress
 	{
 		return [
 			'emailaddress_id' => $this->getEmailaddressId(),
-			'modified' => $this->getModified(),
-			'created' => $this->getCreated(),
+			'modified' => $this->getModified()->getTimestamp(),
+			'created' => $this->getCreated()->getTimestamp(),
 			'account_id' => $this->getAccountId(),
 			'emailaddress' => $this->getEmailaddress(),
 		];
