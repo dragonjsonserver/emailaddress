@@ -193,6 +193,7 @@ class Emailaddress
 	 * Setzt das Passwort des übergebenen Hashes
 	 * @param string $passwordrequesthash
 	 * @param string $newpassword
+	 * @throws \DragonJsonServer\Exception
 	 */
 	public function resetPassword($passwordrequesthash, $newpassword)
 	{

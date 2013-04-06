@@ -94,11 +94,26 @@ class Emailaddress
 	}
 	
 	/**
+	 * Fragt ab ob die Passwort vergessen Möglichkeit verfügbar ist
+	 * @return boolean
+	 */
+	public function isRequestPasswordEnabled()
+	{
+		$serviceManager = $this->getServiceManager();
+		
+		return $this->getServiceManager()->get('Config')['emailaddress']['passwordrequest']['enabled'];
+	}
+	
+	/**
 	 * Sendet eine E-Mail mit dem Hash zum Zurücksetzen des Passwortes
 	 * @param string $emailaddress
+	 * @throws \DragonJsonServer\Exception
 	 */
 	public function requestPassword($emailaddress)
 	{
+		if (!$this->isRequestPasswordEnabled()) {
+			throw new \DragonJsonServer\Exception('passwordrequest disabled');
+		}
 		$serviceManager = $this->getServiceManager();
 		
 		$configEmailaddress = $this->getServiceManager()->get('Config')['emailaddress'];
@@ -112,6 +127,9 @@ class Emailaddress
 	 */
 	public function resetPassword($passwordrequesthash, $newpassword)
 	{
+		if (!$this->isRequestPasswordEnabled()) {
+			throw new \DragonJsonServer\Exception('passwordrequest disabled');
+		}
 		$serviceManager = $this->getServiceManager();
 		
 		$serviceManager->get('Emailaddress')->resetPassword($passwordrequesthash, $newpassword);

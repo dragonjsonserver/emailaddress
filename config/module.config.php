@@ -14,6 +14,7 @@ return [
 	'emailaddress' => [
 		'from' => 'noreply@dragonjsonserver.de',
 		'passwordrequest' => [
+			'enabled' => false,
 			'subject' => 'passwordrequest',
 			'body' => '%passwordrequesthash%',
 		],
