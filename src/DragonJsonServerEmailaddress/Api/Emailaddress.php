@@ -44,7 +44,7 @@ class Emailaddress
 			$account, 
 			$emailaddress, 
 			$password,
-			$this->isEmailaddressValidationEnabled()
+			$this->getServiceManager()->get('Config')['emailaddress']
 		);
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();

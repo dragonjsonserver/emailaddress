@@ -23,10 +23,13 @@ class Emailaddress
 	 * @param \DragonJsonServerAccount\Entity\Account $account
 	 * @param string $emailaddress
 	 * @param string $password
-	 * @param boolean $emailaddressvalidationEnabled
+	 * @param array $configEmailaddress
 	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
 	 */
-	public function linkAccount(\DragonJsonServerAccount\Entity\Account $account, $emailaddress, $password, $emailaddressvalidationEnabled)
+	public function linkAccount(\DragonJsonServerAccount\Entity\Account $account, 
+								$emailaddress, 
+								$password, 
+								array $configEmailaddress)
 	{
 		$entityManager = $this->getEntityManager();
 
@@ -42,11 +45,11 @@ class Emailaddress
 				->setAccount($account)
 				->setEmailaddress($emailaddress)
 		);
-		if ($emailaddressvalidationEnabled) {
-			$emailvalidationhash = md5($emailaddress->getEmailaddressId() . microtime(true));
+		if ($configEmailaddress['emailaddressvalidation']['enabled']) {
+			$emailaddressvalidationhash = md5($emailaddress->getEmailaddressId() . microtime(true));
 			$entityManager->persist((new \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation())
 					->setEmailaddressId($emailaddress->getEmailaddressId())
-					->setEmailaddressvalidationhash($emailvalidationhash));
+					->setEmailaddressvalidationhash($emailaddressvalidationhash));
 			$entityManager->flush();
 			$message = new \Zend\Mail\Message();
 			$message->addTo($emailaddress->getEmailaddress())
