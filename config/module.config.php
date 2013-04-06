@@ -13,23 +13,25 @@
 return [
 	'emailaddress' => [
 		'from' => 'noreply@dragonjsonserver.de',
-		'emailaddressvalidation' => [
-			'enabled' => false,
-			'subject' => 'emailaddressvalidation',
-			'body' => '%emailaddressvalidationhash%',
+		'validationrequest' => [
+			'subject' => 'validationrequest',
+			'body' => '%validationrequesthash%',
 		],
 		'passwordrequest' => [
-			'enabled' => false,
 			'subject' => 'passwordrequest',
 			'body' => '%passwordrequesthash%',
 		],
 	],
     'apiclasses' => [
         '\DragonJsonServerEmailaddress\Api\Emailaddress' => 'Emailaddress',
+        '\DragonJsonServerEmailaddress\Api\Validationrequest' => 'Validationrequest',
+        '\DragonJsonServerEmailaddress\Api\Passwordrequest' => 'Passwordrequest',
     ],
 	'service_manager' => [
 		'invokables' => [
             'Emailaddress' => '\DragonJsonServerEmailaddress\Service\Emailaddress',
+            'Passwordrequest' => '\DragonJsonServerEmailaddress\Service\Passwordrequest',
+            'Validationrequest' => '\DragonJsonServerEmailaddress\Service\Validationrequest',
 		],
 	],
 	'doctrine' => [

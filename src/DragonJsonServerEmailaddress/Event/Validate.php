@@ -21,21 +21,21 @@ class Validate extends \Zend\EventManager\Event
 
     /**
      * Setzt die E-Mail Adressvalidierungsanfrage
-     * @param \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation $emailaddressvalidation
+     * @param \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest
      * @return Validate
      */
-    public function setEmailaddressvalidation(\DragonJsonServerEmailaddress\Entity\Emailaddressvalidation $emailaddressvalidation)
+    public function setValidationrequest(\DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest)
     {
-        $this->setParam('emailaddressvalidation', $emailaddressvalidation);
+        $this->setParam('validationrequest', $validationrequest);
         return $this;
     }
 
     /**
      * Gibt die E-Mail Adressvalidierungsanfrage zurück
-     * @return \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation
+     * @return \DragonJsonServerEmailaddress\Entity\Validationrequest
      */
-    public function getEmailaddressvalidation()
+    public function getValidationrequest()
     {
-        return $this->getParam('emailaddressvalidation');
+        return $this->getParam('validationrequest');
     }
 }

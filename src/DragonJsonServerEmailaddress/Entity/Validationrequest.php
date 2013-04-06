@@ -12,9 +12,9 @@ namespace DragonJsonServerEmailaddress\Entity;
 /**
  * Entityklasse einer E-Mail Adressvalidierung Anfrage
  * @Doctrine\ORM\Mapping\Entity
- * @Doctrine\ORM\Mapping\Table(name="emailaddressvalidations")
+ * @Doctrine\ORM\Mapping\Table(name="validationrequests")
  */
-class Emailaddressvalidation
+class Validationrequest
 {
 	use \DragonJsonServerDoctrine\Entity\ModifiedTrait;
 	use \DragonJsonServerDoctrine\Entity\CreatedTrait;
@@ -25,30 +25,30 @@ class Emailaddressvalidation
 	 * @Doctrine\ORM\Mapping\Column(type="integer")
 	 * @Doctrine\ORM\Mapping\GeneratedValue
 	 **/
-	protected $emailaddressvalidation_id;
+	protected $validationrequest_id;
 	
 	/** 
 	 * @Doctrine\ORM\Mapping\Column(type="string")
 	 **/
-	protected $emailaddressvalidationhash;
+	protected $validationrequesthash;
 	
 	/**
 	 * Gibt die ID der E-Mail Adressvalidierung zurück
 	 * @return integer
 	 */
-	public function getEmailaddressvalidationId()
+	public function getValidationrequestId()
 	{
-		return $this->emailaddressvalidation_id;
+		return $this->validationrequest_id;
 	}
 	
 	/**
 	 * Setzt den Hash der E-Mail Adressvalidierung
-	 * @param string $emailaddressvalidationhash
-	 * @return Emailaddressvalidation
+	 * @param string $validationrequesthash
+	 * @return Validationrequest
 	 */
-	public function setEmailaddressvalidationhash($emailaddressvalidationhash)
+	public function setValidationrequesthash($validationrequesthash)
 	{
-		$this->emailaddressvalidationhash = $emailaddressvalidationhash;
+		$this->validationrequesthash = $validationrequesthash;
 		return $this;
 	}
 	
@@ -56,9 +56,9 @@ class Emailaddressvalidation
 	 * Gibt den Hash der E-Mail Adressvalidierung zurück
 	 * @return string
 	 */
-	public function getEmailaddressvalidationhash()
+	public function getValidationrequesthash()
 	{
-		return $this->emailaddressvalidationhash;
+		return $this->validationrequesthash;
 	}
 	
 	/**
@@ -68,7 +68,7 @@ class Emailaddressvalidation
 	public function toArray()
 	{
 		return [
-			'emailaddressvalidation_id' => $this->getEmailaddressvalidationId(),
+			'validationrequest_id' => $this->getValidationrequestId(),
 			'modified' => $this->getModifiedTimestamp(),
 			'created' => $this->getCreatedTimestamp(),
 			'emailaddress_id' => $this->getEmailaddressId(),

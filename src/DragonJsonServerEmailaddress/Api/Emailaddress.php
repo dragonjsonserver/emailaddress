@@ -15,17 +15,6 @@ namespace DragonJsonServerEmailaddress\Api;
 class Emailaddress
 {
 	use \DragonJsonServer\ServiceManagerTrait;
-
-	/**
-	 * Fragt ab ob die E-Mail Adressvalidierung Möglichkeit verfügbar ist
-	 * @return boolean
-	 */
-	public function isEmailaddressValidationEnabled()
-	{
-		$serviceManager = $this->getServiceManager();
-		
-		return $this->getServiceManager()->get('Config')['emailaddress']['emailaddressvalidation']['enabled'];
-	}
 	
 	/**
 	 * Erstellt eine neue E-Mail Adressverknüpfung für den Account
@@ -90,42 +79,6 @@ class Emailaddress
 	}
 	
 	/**
-	 * Validiert die E-Mail Adresse der E-Mail Adressverknüpfung
-	 * @param string $emailaddressvalidationhash
-	 */
-	public function validateEmailaddress($emailaddressvalidationhash)
-	{
-		if (!$this->isEmailaddressValidationEnabled()) {
-			throw new \DragonJsonServer\Exception('emailaddressvalidation disabled');
-		}
-		$serviceManager = $this->getServiceManager();
-
-		$serviceManager->get('Emailaddress')->validateEmailaddress($emailaddressvalidationhash);
-	}
-	
-	/**
-	 * Sendet die E-Mail Adressvalidierung erneut
-	 * @authenticate
-	 */
-	public function resendEmailaddressvalidation()
-	{
-		if (!$this->isEmailaddressValidationEnabled()) {
-			throw new \DragonJsonServer\Exception('emailaddressvalidation disabled');
-		}
-		$serviceManager = $this->getServiceManager();
-
-		$session = $serviceManager->get('Session')->getSession();
-		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
-		$serviceEmailaddress = $serviceManager->get('Emailaddress');
-		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($account->getAccountId());
-		$serviceEmailaddress->sendEmailaddressvalidation(
-			$emailaddress, 
-			$serviceEmailaddress->getEmailaddressvalidationByEmailaddressId($emailaddress->getEmailaddressId()),
-			$this->getServiceManager()->get('Config')['emailaddress']
-		);
-	}
-	
-	/**
 	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param string $newemailaddress
 	 * @authenticate
@@ -147,48 +100,6 @@ class Emailaddress
 			$session->setData($data);
 			$sessionService->updateSession($session);
 		}
-	}
-	
-	/**
-	 * Fragt ab ob die Passwort vergessen Möglichkeit verfügbar ist
-	 * @return boolean
-	 */
-	public function isRequestPasswordEnabled()
-	{
-		$serviceManager = $this->getServiceManager();
-		
-		return $this->getServiceManager()->get('Config')['emailaddress']['passwordrequest']['enabled'];
-	}
-	
-	/**
-	 * Sendet eine E-Mail mit dem Hash zum Zurücksetzen des Passwortes
-	 * @param string $emailaddress
-	 * @throws \DragonJsonServer\Exception
-	 */
-	public function requestPassword($emailaddress)
-	{
-		if (!$this->isRequestPasswordEnabled()) {
-			throw new \DragonJsonServer\Exception('passwordrequest disabled');
-		}
-		$serviceManager = $this->getServiceManager();
-		
-		$configEmailaddress = $this->getServiceManager()->get('Config')['emailaddress'];
-		$serviceManager->get('Emailaddress')->requestPassword($emailaddress, $configEmailaddress);
-	}
-	
-	/**
-	 * Setzt das Passwort des übergebenen Hashes
-	 * @param string $passwordrequesthash
-	 * @param string $newpassword
-	 */
-	public function resetPassword($passwordrequesthash, $newpassword)
-	{
-		if (!$this->isRequestPasswordEnabled()) {
-			throw new \DragonJsonServer\Exception('passwordrequest disabled');
-		}
-		$serviceManager = $this->getServiceManager();
-		
-		$serviceManager->get('Emailaddress')->resetPassword($passwordrequesthash, $newpassword);
 	}
 	
 	/**

@@ -10,15 +10,15 @@ CREATE TABLE `emailaddresses` (
 	UNIQUE KEY `emailaddress` (`emailaddress`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `emailaddressvalidations` (
-	`emailaddressvalidation_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `validationrequests` (
+	`validationrequest_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`modified` TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
 	`created` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`emailaddress_id` BIGINT(20) UNSIGNED NOT NULL,
-	`emailaddressvalidationhash` CHAR(32) BINARY NOT NULL,
-	PRIMARY KEY (`emailaddressvalidation_id`),
+	`validationrequesthash` CHAR(32) BINARY NOT NULL,
+	PRIMARY KEY (`validationrequest_id`),
 	UNIQUE KEY `emailaddress_id` (`emailaddress_id`),
-	UNIQUE KEY `emailaddressvalidationhash` (`emailaddressvalidationhash`)
+	UNIQUE KEY `validationrequesthash` (`validationrequesthash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `passwordrequests` (
