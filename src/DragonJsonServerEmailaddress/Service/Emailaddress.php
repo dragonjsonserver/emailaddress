@@ -237,6 +237,11 @@ class Emailaddress
 		if (null === $emailaddressvalidation) {
 			throw new \DragonJsonServer\Exception('incorrect emailaddressvalidationhash');
 		}
+		$this->getEventManager()->trigger(
+			(new \DragonJsonServerEmailaddress\Event\Validate())
+				->setTarget($this)
+				->setEmailaddressvalidation($emailaddressvalidation)
+		);
 		$entityManager->remove($emailaddressvalidation);
 		$entityManager->flush();
 	}
