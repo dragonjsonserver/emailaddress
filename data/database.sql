@@ -9,3 +9,12 @@ CREATE TABLE `emailaddresses` (
 	UNIQUE KEY `account_id` (`account_id`),
 	UNIQUE KEY `emailaddress` (`emailaddress`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `passwordrequests` (
+	`passwordrequest_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`created` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`emailaddress_id` BIGINT(20) UNSIGNED NOT NULL,
+	`passwordrequesthash` CHAR(32) BINARY NOT NULL,
+	PRIMARY KEY (`passwordrequest_id`),
+	UNIQUE KEY `passwordrequesthash` (`passwordrequesthash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

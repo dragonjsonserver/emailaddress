@@ -94,6 +94,30 @@ class Emailaddress
 	}
 	
 	/**
+	 * Sendet eine E-Mail mit dem Hash zum Zurücksetzen des Passwortes
+	 * @param string $emailaddress
+	 */
+	public function requestPassword($emailaddress)
+	{
+		$serviceManager = $this->getServiceManager();
+		
+		$configEmailaddress = $this->getServiceManager()->get('Config')['emailaddress'];
+		$serviceManager->get('Emailaddress')->requestPassword($emailaddress, $configEmailaddress);
+	}
+	
+	/**
+	 * Setzt das Passwort des übergebenen Hashes
+	 * @param string $passwordrequesthash
+	 * @param string $newpassword
+	 */
+	public function resetPassword($passwordrequesthash, $newpassword)
+	{
+		$serviceManager = $this->getServiceManager();
+		
+		$serviceManager->get('Emailaddress')->resetPassword($passwordrequesthash, $newpassword);
+	}
+	
+	/**
 	 * Ändert das Passwort der E-Mail Adressverknüpfung
 	 * @param string $newpassword
 	 * @authenticate
@@ -104,6 +128,8 @@ class Emailaddress
 		
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
-		$serviceManager->get('Emailaddress')->changePassword($session->getAccountId(), $newpassword);
+		$serviceEmailaddress = $serviceManager->get('Emailaddress'); 
+		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($session->getAccountId());
+		$serviceEmailaddress->changePassword($emailaddress, $newpassword);
 	}
 }

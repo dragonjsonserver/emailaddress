@@ -11,6 +11,13 @@
  * @return array
  */
 return [
+	'emailaddress' => [
+		'from' => 'noreply@dragonjsonserver.de',
+		'passwordrequest' => [
+			'subject' => 'passwordrequest',
+			'body' => '%passwordrequesthash%',
+		],
+	],
     'apiclasses' => [
         '\DragonJsonServerEmailaddress\Api\Emailaddress' => 'Emailaddress',
     ],
