@@ -45,24 +45,7 @@ class Emailaddress
 				->setAccount($account)
 				->setEmailaddress($emailaddress)
 		);
-		if ($configEmailaddress['emailaddressvalidation']['enabled']) {
-			$emailaddressvalidationhash = md5($emailaddress->getEmailaddressId() . microtime(true));
-			$entityManager->persist((new \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation())
-					->setEmailaddressId($emailaddress->getEmailaddressId())
-					->setEmailaddressvalidationhash($emailaddressvalidationhash));
-			$entityManager->flush();
-			$message = new \Zend\Mail\Message();
-			$message->addTo($emailaddress->getEmailaddress())
-				->addFrom($configEmailaddress['from'])
-				->setSubject($configEmailaddress['emailaddressvalidation']['subject'])
-				->setBody(str_replace(
-					'%emailaddressvalidationhash%',
-					$emailaddressvalidationhash,
-					$configEmailaddress['emailaddressvalidation']['body']
-				));
-			$transport = new \Zend\Mail\Transport\Sendmail();
-			$transport->send($message);
-		}
+		$this->createEmailvalidation($emailaddress, $configEmailaddress);
 		return $emailaddress;
 	}
 	
@@ -167,6 +150,42 @@ class Emailaddress
 	}
 	
 	/**
+	 * Erstellt eine Anfrage für eine E-Mail Adressvalidierung
+	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
+	 * @param array $configEmailaddress
+	 */
+	public function createEmailvalidation(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress, 
+										  array $configEmailaddress)
+	{
+		if ($configEmailaddress['emailaddressvalidation']['enabled']) {
+			return;
+		}
+		$entityManager = $this->getEntityManager();
+
+		$emailaddressvalidation = $entityManager
+			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddressvalidation')
+			->findOneBy(['emailaddress_id' => $emailaddress->getEmailaddressId()]);
+		if (null !== $emailaddressvalidation) {
+			return;
+		}
+		$emailaddressvalidationhash = md5($emailaddress->getEmailaddressId() . microtime(true));
+		$entityManager->persist((new \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation())
+			->setEmailaddressId($emailaddress->getEmailaddressId())
+			->setEmailaddressvalidationhash($emailaddressvalidationhash));
+		$entityManager->flush();
+		$message = (new \Zend\Mail\Message())
+			->addTo($emailaddress->getEmailaddress())
+			->addFrom($configEmailaddress['from'])
+			->setSubject($configEmailaddress['emailaddressvalidation']['subject'])
+			->setBody(str_replace(
+				'%emailaddressvalidationhash%',
+				$emailaddressvalidationhash,
+				$configEmailaddress['emailaddressvalidation']['body']
+			));
+		(new \Zend\Mail\Transport\Sendmail())->send($message);
+	}
+	
+	/**
 	 * Validiert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param string $emailaddressvalidationhash
 	 * @throws \DragonJsonServer\Exception
@@ -189,9 +208,10 @@ class Emailaddress
 	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param integer $account_id
 	 * @param string $newemailaddress
+	 * @param array $configEmailaddress
 	 * @return Emailaddress
 	 */
-	public function changeEmailaddress($account_id, $newemailaddress)
+	public function changeEmailaddress($account_id, $newemailaddress, array $configEmailaddress)
 	{
 		$entityManager = $this->getEntityManager();
 		
@@ -199,6 +219,7 @@ class Emailaddress
 		$emailaddress->setEmailaddress($newemailaddress);
 		$entityManager->persist($emailaddress);
 		$entityManager->flush();
+		$this->createEmailvalidation($emailaddress, $configEmailaddress);
 		return $this;
 	}
 	
@@ -217,17 +238,16 @@ class Emailaddress
 			->setEmailaddressId($emailaddress->getEmailaddressId())
 			->setPasswordrequesthash($passwordrequesthash));
 		$entityManager->flush();
-		$message = new \Zend\Mail\Message();
-		$message->addTo($emailaddress->getEmailaddress())
-		        ->addFrom($configEmailaddress['from'])
-		        ->setSubject($configEmailaddress['passwordrequest']['subject'])
-		        ->setBody(str_replace(
-		        	'%passwordrequesthash%', 
-		        	$passwordrequesthash, 
-		        	$configEmailaddress['passwordrequest']['body']
-		        ));
-		$transport = new \Zend\Mail\Transport\Sendmail();
-		$transport->send($message);
+		$message = (new \Zend\Mail\Message())
+			->addTo($emailaddress->getEmailaddress())
+	        ->addFrom($configEmailaddress['from'])
+	        ->setSubject($configEmailaddress['passwordrequest']['subject'])
+	        ->setBody(str_replace(
+	        	'%passwordrequesthash%', 
+	        	$passwordrequesthash, 
+	        	$configEmailaddress['passwordrequest']['body']
+	        ));
+		(new \Zend\Mail\Transport\Sendmail())->send($message);
 	}
 	
 	/**

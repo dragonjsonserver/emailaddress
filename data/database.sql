@@ -17,6 +17,7 @@ CREATE TABLE `emailaddressvalidations` (
 	`emailaddress_id` BIGINT(20) UNSIGNED NOT NULL,
 	`emailaddressvalidationhash` CHAR(32) BINARY NOT NULL,
 	PRIMARY KEY (`emailaddressvalidation_id`),
+	UNIQUE KEY `emailaddress_id` (`emailaddress_id`),
 	UNIQUE KEY `emailaddressvalidationhash` (`emailaddressvalidationhash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

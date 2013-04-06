@@ -114,7 +114,11 @@ class Emailaddress
 		
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
-		$serviceManager->get('Emailaddress')->changeEmailaddress($session->getAccountId(), $newemailaddress);
+		$serviceManager->get('Emailaddress')->changeEmailaddress(
+			$session->getAccountId(), 
+			$newemailaddress,
+			$this->getServiceManager()->get('Config')['emailaddress']
+		);
 		$data = $session->getData();
 		if (isset($data['emailaddress'])) {
 			$data['emailaddress']['emailaddress'] = $newemailaddress;
