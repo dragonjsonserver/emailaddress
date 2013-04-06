@@ -52,7 +52,7 @@ class Emailaddress
 				->setAccount($account)
 				->setEmailaddress($emailaddress)
 		);
-		$this->createEmailvalidation($emailaddress, $configEmailaddress);
+		$this->createEmailaddressvalidation($emailaddress, $configEmailaddress);
 		return $emailaddress;
 	}
 	
@@ -157,14 +157,33 @@ class Emailaddress
 	}
 	
 	/**
+	 * Gibt die E-Mail Adressvalidierung zur übergebenen EmailaddressID zurück
+	 * @param integer $emailaddress_id
+	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation
+     * @throws \DragonJsonServer\Exception
+	 */
+	public function getEmailaddressvalidationByEmailaddressId($emailaddress_id)
+	{
+		$entityManager = $this->getEntityManager();
+
+		$emailaddressvalidation = $entityManager
+			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddressvalidation')
+			->findOneBy(['emailaddress_id' => $emailaddress_id]);
+		if (null === $emailaddressvalidation) {
+			throw new \DragonJsonServer\Exception('incorrect emailaddress_id', ['emailaddress_id' => $emailaddress_id]);
+		}
+		return $emailaddressvalidation;
+	}
+	
+	/**
 	 * Sendet die E-Mail Adressvalidierung
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation $emailaddressvalidation
 	 * @param array $configEmailaddress
 	 */
-	public function sendEmailvalidation(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress,
-										\DragonJsonServerEmailaddress\Entity\Emailaddressvalidation $emailaddressvalidation, 
-										array $configEmailaddress)
+	public function sendEmailaddressvalidation(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress,
+											   \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation $emailaddressvalidation, 
+											   array $configEmailaddress)
 	{
 		$message = (new \Zend\Mail\Message())
 		->addTo($emailaddress->getEmailaddress())
@@ -183,25 +202,24 @@ class Emailaddress
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
 	 * @param array $configEmailaddress
 	 */
-	public function createEmailvalidation(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress, 
-										  array $configEmailaddress)
+	public function createEmailaddressvalidation(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress, 
+												 array $configEmailaddress)
 	{
 		if (!$configEmailaddress['emailaddressvalidation']['enabled']) {
 			return;
 		}
 		$entityManager = $this->getEntityManager();
 
-		$emailaddressvalidation = $entityManager
-			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddressvalidation')
-			->findOneBy(['emailaddress_id' => $emailaddress->getEmailaddressId()]);
-		if (null === $emailaddressvalidation) {
+		try {
+			$emailaddressvalidation = $this->getEmailaddressvalidationByEmailaddressId($emailaddress->getEmailaddressId());
+		} catch (\Exception $exception) {
 			$emailaddressvalidation = (new \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation())
 				->setEmailaddressId($emailaddress->getEmailaddressId())
 				->setEmailaddressvalidationhash(md5($emailaddress->getEmailaddressId() . microtime(true)));
 			$entityManager->persist($emailaddressvalidation);
 			$entityManager->flush();
 		}
-		$this->sendEmailvalidation($emailaddress, $emailaddressvalidation, $configEmailaddress);
+		$this->sendEmailaddressvalidation($emailaddress, $emailaddressvalidation, $configEmailaddress);
 	}
 	
 	/**
@@ -238,7 +256,7 @@ class Emailaddress
 		$emailaddress->setEmailaddress($newemailaddress);
 		$entityManager->persist($emailaddress);
 		$entityManager->flush();
-		$this->createEmailvalidation($emailaddress, $configEmailaddress);
+		$this->createEmailaddressvalidation($emailaddress, $configEmailaddress);
 		return $this;
 	}
 	

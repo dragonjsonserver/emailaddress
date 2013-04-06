@@ -104,6 +104,28 @@ class Emailaddress
 	}
 	
 	/**
+	 * Sendet die E-Mail Adressvalidierung erneut
+	 * @authenticate
+	 */
+	public function resendEmailaddressvalidation()
+	{
+		if (!$this->isEmailaddressValidationEnabled()) {
+			throw new \DragonJsonServer\Exception('emailaddressvalidation disabled');
+		}
+		$serviceManager = $this->getServiceManager();
+
+		$session = $serviceManager->get('Session')->getSession();
+		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
+		$serviceEmailaddress = $serviceManager->get('Emailaddress');
+		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($account->getAccountId());
+		$serviceEmailaddress->sendEmailaddressvalidation(
+			$emailaddress, 
+			$serviceEmailaddress->getEmailaddressvalidationByEmailaddressId($emailaddress->getEmailaddressId()),
+			$this->getServiceManager()->get('Config')['emailaddress']
+		);
+	}
+	
+	/**
 	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param string $newemailaddress
 	 * @authenticate
