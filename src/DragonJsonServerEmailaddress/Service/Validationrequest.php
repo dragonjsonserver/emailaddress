@@ -56,7 +56,7 @@ class Validationrequest
 					$validationrequest->getValidationrequesthash(),
 					$configEmailaddress['validationrequest']['body']
 			));
-		//(new \Zend\Mail\Transport\Sendmail())->send($message);
+		(new \Zend\Mail\Transport\Sendmail())->send($message);
 	}
 	
 	/**

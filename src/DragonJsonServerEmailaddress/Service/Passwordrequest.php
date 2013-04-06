@@ -42,7 +42,7 @@ class Passwordrequest
 	        	$passwordrequesthash, 
 	        	$configEmailaddress['passwordrequest']['body']
 	        ));
-		//(new \Zend\Mail\Transport\Sendmail())->send($message);
+		(new \Zend\Mail\Transport\Sendmail())->send($message);
 	}
 	
 	/**
