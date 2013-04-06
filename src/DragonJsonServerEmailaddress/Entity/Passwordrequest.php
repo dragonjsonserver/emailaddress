@@ -32,7 +32,7 @@ class Passwordrequest
 	protected $passwordrequesthash;
 	
 	/**
-	 * Gibt die ID der E-Mail Adressverknüpfung zurück
+	 * Gibt die ID der Passwort vergessen Anfrage zurück
 	 * @return integer
 	 */
 	public function getPasswordrequestId()
@@ -42,7 +42,7 @@ class Passwordrequest
 	
 	/**
 	 * Setzt den Hash der Passwort vergessen Anfrage
-	 * @param string $passwortrequesthash
+	 * @param string $passwordrequesthash
 	 * @return Passwordrequest
 	 */
 	public function setPasswordrequesthash($passwordrequesthash)
@@ -61,7 +61,7 @@ class Passwordrequest
 	}
 	
 	/**
-	 * Gibt die Attribute der E-Mail Adressverknüpfung als Array zurück
+	 * Gibt die Attribute der Passwort vergessen Anfrage als Array zurück
 	 * @return array
 	 */
 	public function toArray()
