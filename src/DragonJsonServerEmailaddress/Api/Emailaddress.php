@@ -17,6 +17,17 @@ class Emailaddress
 	use \DragonJsonServer\ServiceManagerTrait;
 
 	/**
+	 * Fragt ab ob die E-Mail Adressvalidierung Möglichkeit verfügbar ist
+	 * @return boolean
+	 */
+	public function isEmailaddressValidationEnabled()
+	{
+		$serviceManager = $this->getServiceManager();
+		
+		return $this->getServiceManager()->get('Config')['emailaddress']['emailaddressvalidation']['enabled'];
+	}
+	
+	/**
 	 * Erstellt eine neue E-Mail Adressverknüpfung für den Account
 	 * @param string $emailaddress
 	 * @param string $password
@@ -29,7 +40,12 @@ class Emailaddress
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
 		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
-		$emailaddress = $serviceManager->get('Emailaddress')->linkAccount($account, $emailaddress, $password);
+		$emailaddress = $serviceManager->get('Emailaddress')->linkAccount(
+			$account, 
+			$emailaddress, 
+			$password,
+			$this->isEmailaddressValidationEnabled()
+		);
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();
 		$session->setData($data);
@@ -71,6 +87,20 @@ class Emailaddress
 		$session = $serviceSession->createSession($account, ['emailaddress' => $emailaddress->toArray()]);
 		$serviceSession->setSession($session);
 		return $session->toArray();
+	}
+	
+	/**
+	 * Validiert die E-Mail Adresse der E-Mail Adressverknüpfung
+	 * @param string $emailaddressvalidationhash
+	 */
+	public function validateEmailaddress($emailaddressvalidationhash)
+	{
+		if (!$this->isEmailaddressValidationEnabled()) {
+			throw new \DragonJsonServer\Exception('emailaddressvalidation disabled');
+		}
+		$serviceManager = $this->getServiceManager();
+
+		$serviceManager->get('Emailaddress')->validateEmailaddress($emailaddressvalidationhash);
 	}
 	
 	/**

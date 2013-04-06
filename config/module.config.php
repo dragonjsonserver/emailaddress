@@ -13,6 +13,11 @@
 return [
 	'emailaddress' => [
 		'from' => 'noreply@dragonjsonserver.de',
+		'emailaddressvalidation' => [
+			'enabled' => false,
+			'subject' => 'emailaddressvalidation',
+			'body' => '%emailaddressvalidationhash%',
+		],
 		'passwordrequest' => [
 			'enabled' => false,
 			'subject' => 'passwordrequest',

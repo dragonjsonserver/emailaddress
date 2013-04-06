@@ -23,9 +23,10 @@ class Emailaddress
 	 * @param \DragonJsonServerAccount\Entity\Account $account
 	 * @param string $emailaddress
 	 * @param string $password
+	 * @param boolean $emailaddressvalidationEnabled
 	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
 	 */
-	public function linkAccount(\DragonJsonServerAccount\Entity\Account $account, $emailaddress, $password)
+	public function linkAccount(\DragonJsonServerAccount\Entity\Account $account, $emailaddress, $password, $emailaddressvalidationEnabled)
 	{
 		$entityManager = $this->getEntityManager();
 
@@ -41,6 +42,24 @@ class Emailaddress
 				->setAccount($account)
 				->setEmailaddress($emailaddress)
 		);
+		if ($emailaddressvalidationEnabled) {
+			$emailvalidationhash = md5($emailaddress->getEmailaddressId() . microtime(true));
+			$entityManager->persist((new \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation())
+					->setEmailaddressId($emailaddress->getEmailaddressId())
+					->setEmailaddressvalidationhash($emailvalidationhash));
+			$entityManager->flush();
+			$message = new \Zend\Mail\Message();
+			$message->addTo($emailaddress->getEmailaddress())
+				->addFrom($configEmailaddress['from'])
+				->setSubject($configEmailaddress['emailaddressvalidation']['subject'])
+				->setBody(str_replace(
+					'%emailaddressvalidationhash%',
+					$emailaddressvalidationhash,
+					$configEmailaddress['emailaddressvalidation']['body']
+				));
+			$transport = new \Zend\Mail\Transport\Sendmail();
+			$transport->send($message);
+		}
 		return $emailaddress;
 	}
 	
@@ -142,6 +161,25 @@ class Emailaddress
 				->setEmailaddress($emailaddress)
 		);
 		return $emailaddress;
+	}
+	
+	/**
+	 * Validiert die E-Mail Adresse der E-Mail Adressverknüpfung
+	 * @param string $emailaddressvalidationhash
+	 * @throws \DragonJsonServer\Exception
+	 */
+	public function validateEmailaddress($emailaddressvalidationhash)
+	{
+		$entityManager = $this->getEntityManager();
+
+		$emailaddressvalidation = $entityManager
+			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddressvalidation')
+			->findOneBy(['emailaddressvalidationhash' => $emailaddressvalidationhash]);
+		if (null === $emailaddressvalidation) {
+			throw new \DragonJsonServer\Exception('incorrect emailaddressvalidationhash');
+		}
+		$entityManager->remove($emailaddressvalidation);
+		$entityManager->flush();
 	}
 	
 	/**
