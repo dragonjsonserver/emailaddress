@@ -32,7 +32,14 @@ class Emailaddress
 								array $configEmailaddress)
 	{
 		$entityManager = $this->getEntityManager();
-
+		
+		try {
+			$entity = $this->getEmailaddressByAccountId($account->getAccountId());
+		} catch (\Exception $exception) {
+		}
+		if (isset($entity)) {
+			throw new \DragonJsonServer\Exception('account already linked with an emailaddress');
+		}
 		$emailaddress = (new \DragonJsonServerEmailaddress\Entity\Emailaddress())
 			->setAccountId($account->getAccountId())
 			->setEmailaddress($emailaddress)
