@@ -48,6 +48,7 @@ class Emailaddress
 	 * Entfernt die E-Mail Adressverknüpfung für den Account
 	 * @param \DragonJsonServerAccount\Entity\Account $account
      * @throws \DragonJsonServer\Exception
+     * @return Emailaddress
 	 */
 	public function unlinkAccount(\DragonJsonServerAccount\Entity\Account $account)
 	{
@@ -66,6 +67,7 @@ class Emailaddress
 		);
 		$entityManager->remove($emailaddress);
 		$entityManager->flush();
+		return $this;
 	}
 	
 	/**
@@ -117,6 +119,7 @@ class Emailaddress
 	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param integer $account_id
 	 * @param string $newemailaddress
+	 * @return Emailaddress
 	 */
 	public function changeEmailaddress($account_id, $newemailaddress)
 	{
@@ -126,12 +129,14 @@ class Emailaddress
 		$emailaddress->setEmailaddress($newemailaddress);
 		$entityManager->persist($emailaddress);
 		$entityManager->flush();
+		return $this;
 	}
 	
 	/**
 	 * Ändert das Passwort der E-Mail Adressverknüpfung
 	 * @param integer $account_id
 	 * @param string $newpassword
+	 * @return Emailaddress
 	 */
 	public function changePassword($account_id, $newpassword)
 	{
@@ -141,5 +146,6 @@ class Emailaddress
 		$emailaddress->setPassword($newpassword);
 		$entityManager->persist($emailaddress);
 		$entityManager->flush();
+		return $this;
 	}
 }
