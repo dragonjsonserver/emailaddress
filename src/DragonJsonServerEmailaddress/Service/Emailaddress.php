@@ -157,6 +157,28 @@ class Emailaddress
 	}
 	
 	/**
+	 * Sendet die E-Mail Adressvalidierung
+	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
+	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation $emailaddressvalidation
+	 * @param array $configEmailaddress
+	 */
+	public function sendEmailvalidation(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress,
+										\DragonJsonServerEmailaddress\Entity\Emailaddressvalidation $emailaddressvalidation, 
+										array $configEmailaddress)
+	{
+		$message = (new \Zend\Mail\Message())
+		->addTo($emailaddress->getEmailaddress())
+		->addFrom($configEmailaddress['from'])
+		->setSubject($configEmailaddress['emailaddressvalidation']['subject'])
+		->setBody(str_replace(
+				'%emailaddressvalidationhash%',
+				$emailaddressvalidation->getEmailaddressvalidationhash(),
+				$configEmailaddress['emailaddressvalidation']['body']
+		));
+		(new \Zend\Mail\Transport\Sendmail())->send($message);
+	}
+	
+	/**
 	 * Erstellt eine Anfrage für eine E-Mail Adressvalidierung
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
 	 * @param array $configEmailaddress
@@ -164,7 +186,7 @@ class Emailaddress
 	public function createEmailvalidation(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress, 
 										  array $configEmailaddress)
 	{
-		if ($configEmailaddress['emailaddressvalidation']['enabled']) {
+		if (!$configEmailaddress['emailaddressvalidation']['enabled']) {
 			return;
 		}
 		$entityManager = $this->getEntityManager();
@@ -172,24 +194,14 @@ class Emailaddress
 		$emailaddressvalidation = $entityManager
 			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddressvalidation')
 			->findOneBy(['emailaddress_id' => $emailaddress->getEmailaddressId()]);
-		if (null !== $emailaddressvalidation) {
-			return;
+		if (null === $emailaddressvalidation) {
+			$emailaddressvalidation = (new \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation())
+				->setEmailaddressId($emailaddress->getEmailaddressId())
+				->setEmailaddressvalidationhash(md5($emailaddress->getEmailaddressId() . microtime(true)));
+			$entityManager->persist($emailaddressvalidation);
+			$entityManager->flush();
 		}
-		$emailaddressvalidationhash = md5($emailaddress->getEmailaddressId() . microtime(true));
-		$entityManager->persist((new \DragonJsonServerEmailaddress\Entity\Emailaddressvalidation())
-			->setEmailaddressId($emailaddress->getEmailaddressId())
-			->setEmailaddressvalidationhash($emailaddressvalidationhash));
-		$entityManager->flush();
-		$message = (new \Zend\Mail\Message())
-			->addTo($emailaddress->getEmailaddress())
-			->addFrom($configEmailaddress['from'])
-			->setSubject($configEmailaddress['emailaddressvalidation']['subject'])
-			->setBody(str_replace(
-				'%emailaddressvalidationhash%',
-				$emailaddressvalidationhash,
-				$configEmailaddress['emailaddressvalidation']['body']
-			));
-		(new \Zend\Mail\Transport\Sendmail())->send($message);
+		$this->sendEmailvalidation($emailaddress, $emailaddressvalidation, $configEmailaddress);
 	}
 	
 	/**
