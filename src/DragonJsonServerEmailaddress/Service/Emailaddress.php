@@ -82,6 +82,19 @@ class Emailaddress
 				->setAccount($account)
 				->setEmailaddress($emailaddress)
 		);
+		$emailaddress_id = $emailaddress->getEmailaddressId();
+		$entityManager
+			->createQuery('
+				DELETE FROM \DragonJsonServerEmailaddress\Entity\Passwordrequest passwordrequest
+				WHERE passwordrequest.emailaddress_id = :emailaddress_id
+			')
+			->execute(['emailaddress_id' => $emailaddress_id]);
+		$entityManager
+			->createQuery('
+				DELETE FROM \DragonJsonServerEmailaddress\Entity\Validationrequest validationrequest
+				WHERE validationrequest.emailaddress_id = :emailaddress_id
+			')
+			->execute(['emailaddress_id' => $emailaddress_id]);
 		$entityManager->remove($emailaddress);
 		$entityManager->flush();
 		return $this;
