@@ -74,7 +74,7 @@ class Emailaddress
 		$emailaddress = $entityManager->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddress')
 								      ->findOneBy(['account_id' => $account->getAccountId()]);
 		if (null === $emailaddress) {
-			throw new \DragonJsonServer\Exception('no emailaddress found');
+			throw new \DragonJsonServer\Exception('missing emailaddress', ['account' => $account->toArray()]);
 		}
 		$this->getEventManager()->trigger(
 			(new \DragonJsonServerEmailaddress\Event\UnlinkAccount())
@@ -99,7 +99,7 @@ class Emailaddress
 
 		$emailaddress = $entityManager->find('\DragonJsonServerEmailaddress\Entity\Emailaddress', $emailaddress_id);
 		if (null === $emailaddress) {
-			throw new \DragonJsonServer\Exception('incorrect emailaddress_id', ['emailaddress_id' => $emailaddress_id]);
+			throw new \DragonJsonServer\Exception('invalid emailaddress_id', ['emailaddress_id' => $emailaddress_id]);
 		}
 		return $emailaddress;
 	}
@@ -114,11 +114,12 @@ class Emailaddress
 	{
 		$entityManager = $this->getEntityManager();
 
+		$conditions = ['account_id' => $account_id];
 		$emailaddress = $entityManager
 			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddress')
-		    ->findOneBy(['account_id' => $account_id]);
+		    ->findOneBy($conditions);
 		if (null === $emailaddress) {
-			throw new \DragonJsonServer\Exception('incorrect account_id');
+			throw new \DragonJsonServer\Exception('invalid account_id', $conditions);
 		}
 		return $emailaddress;
 	}
@@ -133,11 +134,12 @@ class Emailaddress
 	{
 		$entityManager = $this->getEntityManager();
 
+		$conditions = ['emailaddress' => $emailaddress];
 		$emailaddress = $entityManager
 			->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddress')
-		    ->findOneBy(['emailaddress' => $emailaddress]);
+		    ->findOneBy($conditions);
 		if (null === $emailaddress) {
-			throw new \DragonJsonServer\Exception('incorrect emailaddress');
+			throw new \DragonJsonServer\Exception('invalid emailaddress', $conditions);
 		}
 		return $emailaddress;
 	}

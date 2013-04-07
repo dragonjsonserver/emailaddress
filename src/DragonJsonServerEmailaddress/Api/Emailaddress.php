@@ -32,7 +32,7 @@ class Emailaddress
 		} catch (\Exception $exception) {
 		}
 		if (isset($entity)) {
-			throw new \DragonJsonServer\Exception('emailaddress not unique');
+			throw new \DragonJsonServer\Exception('emailaddress not unique', ['emailaddress' => $emailaddress]);
 		}
 	}
 	

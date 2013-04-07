@@ -55,11 +55,12 @@ class Passwordrequest
 	{
 		$entityManager = $this->getEntityManager();
 
+		$conditions = ['passwordrequesthash' => $passwordrequesthash];
 		$passwordrequest = $entityManager
 			->getRepository('\DragonJsonServerEmailaddress\Entity\Passwordrequest')
-			->findOneBy(['passwordrequesthash' => $passwordrequesthash]);
+			->findOneBy($conditions);
 		if (null === $passwordrequest) {
-			throw new \DragonJsonServer\Exception('incorrect passwordrequesthash');
+			throw new \DragonJsonServer\Exception('invalid passwordrequesthash', $conditions);
 		}
 		$serviceEmailaddress = $this->getServiceManager()->get('Emailaddress');
 		$emailaddress = $serviceEmailaddress->getEmailaddressByEmailaddressId($passwordrequest->getEmailaddressId());

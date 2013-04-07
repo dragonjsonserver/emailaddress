@@ -28,11 +28,12 @@ class Validationrequest
 	{
 		$entityManager = $this->getEntityManager();
 
+		$conditions = ['emailaddress_id' => $emailaddress_id];
 		$validationrequest = $entityManager
 			->getRepository('\DragonJsonServerEmailaddress\Entity\Validationrequest')
-			->findOneBy(['emailaddress_id' => $emailaddress_id]);
+			->findOneBy($conditions);
 		if (null === $validationrequest) {
-			throw new \DragonJsonServer\Exception('incorrect emailaddress_id', ['emailaddress_id' => $emailaddress_id]);
+			throw new \DragonJsonServer\Exception('invalid emailaddress_id', $conditions);
 		}
 		return $validationrequest;
 	}
@@ -87,11 +88,12 @@ class Validationrequest
 	{
 		$entityManager = $this->getEntityManager();
 
+		$conditions = ['validationrequesthash' => $validationrequesthash];
 		$validationrequest = $entityManager
 			->getRepository('\DragonJsonServerEmailaddress\Entity\Validationrequest')
-			->findOneBy(['validationrequesthash' => $validationrequesthash]);
+			->findOneBy($conditions);
 		if (null === $validationrequest) {
-			throw new \DragonJsonServer\Exception('incorrect validationrequesthash');
+			throw new \DragonJsonServer\Exception('invalid validationrequesthash', $conditions);
 		}
 		$this->getEventManager()->trigger(
 			(new \DragonJsonServerEmailaddress\Event\ValidateEmailaddress())

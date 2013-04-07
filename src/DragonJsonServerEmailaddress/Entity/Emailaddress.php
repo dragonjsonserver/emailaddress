@@ -97,7 +97,7 @@ class Emailaddress
 	public function verifyPassword($password)
 	{
 		if (!(new \Zend\Crypt\Password\Bcrypt())->verify($password, $this->getPasswordcrypt())) {
-			throw new \DragonJsonServer\Exception('incorrect password');
+			throw new \DragonJsonServer\Exception('invalid password');
 		}
 		return $this;
 	}
