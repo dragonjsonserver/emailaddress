@@ -15,6 +15,23 @@ namespace DragonJsonServerEmailaddress\Api;
 class Emailaddress
 {
 	use \DragonJsonServer\ServiceManagerTrait;
+
+	/**
+	 * Prüft ob die übergebene E-Mail Adresse noch nicht vergeben ist
+	 * @param string $emailaddress
+	 * @return boolean 
+	 */
+	public function uniqueEmailaddress($emailaddress)
+	{
+		$serviceManager = $this->getServiceManager();
+		
+		try {
+			$serviceManager->get('Emailaddress')->getEmailaddressByEmailaddress($emailaddress);
+			return false;
+		} catch (\Exception $exception) {
+		}
+		return true;
+	}
 	
 	/**
 	 * Erstellt eine neue E-Mail Adressverknüpfung für den Account
