@@ -20,7 +20,7 @@ class Emailaddress
 	 * Erstellt eine neue E-Mail Adressverknüpfung für den Account
 	 * @param string $emailaddress
 	 * @param string $password
-	 * @authenticate
+	 * @session
 	 */
 	public function linkAccount($emailaddress, $password)
 	{
@@ -43,7 +43,7 @@ class Emailaddress
 	
     /**
 	 * Entfernt die E-Mail Adressverknüpfung für den Account
-	 * @authenticate
+	 * @session
 	 */
 	public function unlinkAccount()
 	{
@@ -81,7 +81,7 @@ class Emailaddress
 	/**
 	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param string $newemailaddress
-	 * @authenticate
+	 * @session
 	 */
 	public function changeEmailaddress($newemailaddress)
 	{
@@ -105,7 +105,7 @@ class Emailaddress
 	/**
 	 * Ändert das Passwort der E-Mail Adressverknüpfung
 	 * @param string $newpassword
-	 * @authenticate
+	 * @session
 	 */
 	public function changePassword($newpassword)
 	{

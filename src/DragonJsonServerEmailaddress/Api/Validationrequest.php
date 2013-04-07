@@ -18,7 +18,7 @@ class Validationrequest
 
 	/**
 	 * Sendet die E-Mail Adressvalidierung erneut
-	 * @authenticate
+	 * @session
 	 */
 	public function resendValidationrequest()
 	{
