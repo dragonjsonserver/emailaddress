@@ -84,6 +84,23 @@ class Emailaddress
 	}
 	
 	/**
+	 * Gibt die E-Mail Adresse zur übergebenen EmailaddressID zurück
+	 * @param integer $emailaddress_id
+	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
+     * @throws \DragonJsonServer\Exception
+	 */
+	public function getEmailaddressByEmailaddressId($emailaddress_id)
+	{
+		$entityManager = $this->getEntityManager();
+
+		$emailaddress = $entityManager->find('\DragonJsonServerEmailaddress\Entity\Emailaddress', $emailaddress_id);
+		if (null === $emailaddress) {
+			throw new \DragonJsonServer\Exception('incorrect emailaddress_id', ['emailaddress_id' => $emailaddress_id]);
+		}
+		return $emailaddress;
+	}
+	
+	/**
 	 * Gibt die E-Mail Adresse zur übergebenen AccountID zurück
 	 * @param integer $account_id
 	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
@@ -98,23 +115,6 @@ class Emailaddress
 		    ->findOneBy(['account_id' => $account_id]);
 		if (null === $emailaddress) {
 			throw new \DragonJsonServer\Exception('incorrect account_id');
-		}
-		return $emailaddress;
-	}
-	
-	/**
-	 * Gibt die E-Mail Adresse zur übergebenen EmailaddressID zurück
-	 * @param integer $emailaddress_id
-	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
-     * @throws \DragonJsonServer\Exception
-	 */
-	public function getEmailaddressByEmailaddressId($emailaddress_id)
-	{
-		$entityManager = $this->getEntityManager();
-
-		$emailaddress = $entityManager->find('\DragonJsonServerEmailaddress\Entity\Emailaddress', $emailaddress_id);
-		if (null === $emailaddress) {
-			throw new \DragonJsonServer\Exception('incorrect emailaddress_id', ['emailaddress_id' => $emailaddress_id]);
 		}
 		return $emailaddress;
 	}
