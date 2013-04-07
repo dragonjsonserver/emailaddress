@@ -17,20 +17,23 @@ class Emailaddress
 	use \DragonJsonServer\ServiceManagerTrait;
 
 	/**
-	 * Prüft ob die übergebene E-Mail Adresse noch nicht vergeben ist
+	 * Validiert die übergebene E-Mail Adresse
 	 * @param string $emailaddress
-	 * @return boolean 
+     * @throws \DragonJsonServer\Exception
 	 */
-	public function uniqueEmailaddress($emailaddress)
+	public function validateEmailaddress($emailaddress)
 	{
 		$serviceManager = $this->getServiceManager();
 		
+		$serviceEmailaddress = $serviceManager->get('Emailaddress');
+		$serviceEmailaddress->validateEmailaddress($emailaddress);
 		try {
-			$serviceManager->get('Emailaddress')->getEmailaddressByEmailaddress($emailaddress);
-			return false;
+			$entity = $serviceEmailaddress->getEmailaddressByEmailaddress($emailaddress);
 		} catch (\Exception $exception) {
 		}
-		return true;
+		if (isset($entity)) {
+			throw new \DragonJsonServer\Exception('emailaddress not unique');
+		}
 	}
 	
 	/**
@@ -41,6 +44,7 @@ class Emailaddress
 	 */
 	public function linkAccount($emailaddress, $password)
 	{
+		$this->validateEmailaddress($emailaddress);
 		$serviceManager = $this->getServiceManager();
 
 		$sessionService = $serviceManager->get('Session');

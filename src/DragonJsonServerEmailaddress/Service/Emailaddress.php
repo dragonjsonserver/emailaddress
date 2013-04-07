@@ -18,6 +18,17 @@ class Emailaddress
 	use \DragonJsonServer\EventManagerTrait;
 	use \DragonJsonServerDoctrine\EntityManagerTrait;
 	
+	/**
+	 * Validiert die übergebene E-Mail Adresse
+	 * @param string $emailaddress
+     * @throws \DragonJsonServer\Exception
+	 */
+	public function validateEmailaddress($emailaddress)
+	{
+		(new \DragonJsonServerEmailaddress\Entity\Emailaddress())
+			->setEmailaddress($emailaddress);
+	}
+	
     /**
 	 * Erstellt eine neue E-Mail Adressverknüpfung für den Account
 	 * @param \DragonJsonServerAccount\Entity\Account $account
@@ -33,13 +44,6 @@ class Emailaddress
 	{
 		$entityManager = $this->getEntityManager();
 		
-		try {
-			$entity = $this->getEmailaddressByAccountId($account->getAccountId());
-		} catch (\Exception $exception) {
-		}
-		if (isset($entity)) {
-			throw new \DragonJsonServer\Exception('account already linked with an emailaddress');
-		}
 		$emailaddress = (new \DragonJsonServerEmailaddress\Entity\Emailaddress())
 			->setAccountId($account->getAccountId())
 			->setEmailaddress($emailaddress)
