@@ -115,7 +115,7 @@ class Emailaddress
 	 */
 	public function changeEmailaddress($newemailaddress)
 	{
-		$this->validateEmailaddress($emailaddress);
+		$this->validateEmailaddress($newemailaddress);
 		$serviceManager = $this->getServiceManager();
 		
 		$sessionService = $serviceManager->get('Session');

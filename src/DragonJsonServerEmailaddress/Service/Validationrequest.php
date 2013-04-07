@@ -68,11 +68,13 @@ class Validationrequest
 	{
 		$entityManager = $this->getEntityManager();
 
-		$validationrequest = $serviceManager->get('Validationrequest')->getValidationrequestByEmailaddressId($emailaddress_id, false);
+		$emailaddress_id = $emailaddress->getEmailaddressId();
+		$validationrequest = $this->getServiceManager()->get('Validationrequest')
+			->getValidationrequestByEmailaddressId($emailaddress_id, false);
 		if (null === $validationrequest) {
 			$validationrequest = (new \DragonJsonServerEmailaddress\Entity\Validationrequest())
-				->setEmailaddressId($emailaddress->getEmailaddressId())
-				->setValidationrequesthash(md5($emailaddress->getEmailaddressId() . microtime(true)));
+				->setEmailaddressId($emailaddress_id)
+				->setValidationrequesthash(md5($emailaddress_id . microtime(true)));
 			$entityManager->persist($validationrequest);
 			$entityManager->flush();
 		}
