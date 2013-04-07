@@ -50,14 +50,9 @@ class Emailaddress
 	 * Setzt die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param string $emailaddress
 	 * @return Emailaddress
-     * @throws \DragonJsonServer\Exception
 	 */
 	public function setEmailaddress($emailaddress)
 	{
-		$validator = new \Zend\Validator\EmailAddress();
-		if (!$validator->isValid($emailaddress)) {
-			throw new \DragonJsonServer\Exception('invalid emailaddress', ['emailaddress' => $emailaddress]);
-		}
 		$this->emailaddress = $emailaddress;
 		return $this;
 	}
