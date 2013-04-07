@@ -10,7 +10,7 @@
 namespace DragonJsonServerEmailaddress\Entity;
 
 /**
- * Trait für die EmailaddressId mit der Beziehung zu einer E-Mail Adresse
+ * Trait für die EmailaddressID mit der Beziehung zu einer E-Mail Adresse
  */
 trait EmailaddressIdTrait
 {
