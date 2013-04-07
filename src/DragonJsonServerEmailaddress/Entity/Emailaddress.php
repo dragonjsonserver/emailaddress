@@ -54,7 +54,8 @@ class Emailaddress
 	 */
 	public function setEmailaddress($emailaddress)
 	{
-		if (!(new \Zend\Validator\EmailAddress())->isValid($emailaddress)) {
+		$validator = new \Zend\Validator\EmailAddress();
+		if (!$validator->isValid($emailaddress)) {
 			throw new \DragonJsonServer\Exception('invalid emailaddress', ['emailaddress' => $emailaddress]);
 		}
 		$this->emailaddress = $emailaddress;
