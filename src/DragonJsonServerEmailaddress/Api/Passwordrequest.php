@@ -25,8 +25,7 @@ class Passwordrequest
 	{
 		$serviceManager = $this->getServiceManager();
 		
-		$configEmailaddress = $this->getServiceManager()->get('Config')['emailaddress'];
-		$serviceManager->get('Passwordrequest')->requestPassword($emailaddress, $configEmailaddress);
+		$serviceManager->get('Passwordrequest')->requestPassword($emailaddress);
 	}
 	
 	/**

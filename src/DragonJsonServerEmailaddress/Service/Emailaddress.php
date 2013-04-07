@@ -36,13 +36,11 @@ class Emailaddress
 	 * @param \DragonJsonServerAccount\Entity\Account $account
 	 * @param string $emailaddress
 	 * @param string $password
-	 * @param array $configEmailaddress
 	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
 	 */
 	public function linkAccount(\DragonJsonServerAccount\Entity\Account $account, 
 								$emailaddress, 
-								$password, 
-								array $configEmailaddress)
+								$password)
 	{
 		$entityManager = $this->getEntityManager();
 		
@@ -59,7 +57,7 @@ class Emailaddress
 				->setEmailaddress($emailaddress)
 		);
 		$this->getServiceManager()->get('Validationrequest')
-			->createValidationrequest($emailaddress, $configEmailaddress);
+			->createValidationrequest($emailaddress);
 		return $emailaddress;
 	}
 	
@@ -167,10 +165,9 @@ class Emailaddress
 	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param integer $account_id
 	 * @param string $newemailaddress
-	 * @param array $configEmailaddress
 	 * @return Emailaddress
 	 */
-	public function changeEmailaddress($account_id, $newemailaddress, array $configEmailaddress)
+	public function changeEmailaddress($account_id, $newemailaddress)
 	{
 		$entityManager = $this->getEntityManager();
 		
@@ -179,7 +176,7 @@ class Emailaddress
 		$entityManager->persist($emailaddress);
 		$entityManager->flush();
 		$this->getServiceManager()->get('Validationrequest')
-			->createValidationrequest($emailaddress, $configEmailaddress);
+			->createValidationrequest($emailaddress);
 		return $this;
 	}
 	

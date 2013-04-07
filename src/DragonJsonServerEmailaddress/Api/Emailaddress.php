@@ -50,12 +50,7 @@ class Emailaddress
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
 		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
-		$emailaddress = $serviceManager->get('Emailaddress')->linkAccount(
-			$account, 
-			$emailaddress, 
-			$password,
-			$this->getServiceManager()->get('Config')['emailaddress']
-		);
+		$emailaddress = $serviceManager->get('Emailaddress')->linkAccount($account, $emailaddress, $password);
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();
 		$session->setData($data);
@@ -131,8 +126,7 @@ class Emailaddress
 		$session = $sessionService->getSession();
 		$serviceManager->get('Emailaddress')->changeEmailaddress(
 			$session->getAccountId(), 
-			$newemailaddress,
-			$this->getServiceManager()->get('Config')['emailaddress']
+			$newemailaddress
 		);
 		$data = $session->getData();
 		if (isset($data['emailaddress'])) {

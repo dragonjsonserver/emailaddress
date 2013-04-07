@@ -20,9 +20,8 @@ class Passwordrequest
 	/**
 	 * Sendet eine E-Mail mit dem Hash zum Zurücksetzen des Passwortes
 	 * @param string $emailaddress
-	 * @param array $configEmailaddress
 	 */
-	public function requestPassword($emailaddress, array $configEmailaddress)
+	public function requestPassword($emailaddress)
 	{
 		$entityManager = $this->getEntityManager();
 
@@ -33,6 +32,7 @@ class Passwordrequest
 			->setEmailaddressId($emailaddress->getEmailaddressId())
 			->setPasswordrequesthash($passwordrequesthash));
 		$entityManager->flush();
+		$configEmailaddress = $this->getServiceManager()->get('Config')['emailaddress'];
 		$message = (new \Zend\Mail\Message())
 			->addTo($emailaddress->getEmailaddress())
 	        ->addFrom($configEmailaddress['from'])

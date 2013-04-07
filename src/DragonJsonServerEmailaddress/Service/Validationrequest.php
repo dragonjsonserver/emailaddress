@@ -41,12 +41,11 @@ class Validationrequest
 	 * Sendet die E-Mail Adressvalidierung
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
 	 * @param \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest
-	 * @param array $configEmailaddress
 	 */
 	public function sendValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress,
-										  \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest, 
-										  array $configEmailaddress)
+										  \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest)
 	{
+		$configEmailaddress = $this->getServiceManager()->get('Config')['emailaddress'];
 		$message = (new \Zend\Mail\Message())
 			->addTo($emailaddress->getEmailaddress())
 			->addFrom($configEmailaddress['from'])
@@ -62,10 +61,8 @@ class Validationrequest
 	/**
 	 * Erstellt eine Anfrage für eine E-Mail Adressvalidierung
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
-	 * @param array $configEmailaddress
 	 */
-	public function createValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress, 
-											array $configEmailaddress)
+	public function createValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress)
 	{
 		$entityManager = $this->getEntityManager();
 
@@ -78,7 +75,7 @@ class Validationrequest
 			$entityManager->persist($validationrequest);
 			$entityManager->flush();
 		}
-		$this->sendValidationrequest($emailaddress, $validationrequest, $configEmailaddress);
+		$this->sendValidationrequest($emailaddress, $validationrequest);
 	}
 	
 	/**
