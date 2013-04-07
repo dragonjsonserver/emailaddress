@@ -18,8 +18,8 @@ class Validationrequest
 	
 	/**
 	 * Gibt die E-Mail Adressvalidierung des aktuellen Accounts zurück
-	 * @session
 	 * @return array|null
+	 * @session
 	 */
 	public function getValidationrequest()
 	{

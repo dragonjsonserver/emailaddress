@@ -92,8 +92,8 @@ class Emailaddress
 	
 	/**
 	 * Gibt die E-Mail Adressverknüpfung des aktuellen Accounts zurück
-	 * @session
 	 * @return array|null
+	 * @session
 	 */
 	public function getEmailaddress()
 	{
