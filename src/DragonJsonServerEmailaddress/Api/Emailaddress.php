@@ -100,6 +100,24 @@ class Emailaddress
 	}
 	
 	/**
+	 * Gibt die E-Mail Adressverknüpfung des aktuellen Accounts zurück
+	 * @session
+	 * @return array|null
+	 */
+	public function getEmailaddress()
+	{
+		$serviceManager = $this->getServiceManager();
+		
+		$session = $serviceManager->get('Session')->getSession();
+		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
+		try {
+			return $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId());
+		} catch (\Exception $exception) {
+		}
+		return;
+	}
+	
+	/**
 	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param string $newemailaddress
 	 * @session
