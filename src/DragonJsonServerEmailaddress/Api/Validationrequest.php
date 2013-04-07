@@ -15,6 +15,25 @@ namespace DragonJsonServerEmailaddress\Api;
 class Validationrequest
 {
 	use \DragonJsonServer\ServiceManagerTrait;
+	
+	/**
+	 * Gibt die E-Mail Adressvalidierung des aktuellen Accounts zurück
+	 * @session
+	 * @return array|null
+	 */
+	public function getValidationrequest()
+	{
+		$serviceManager = $this->getServiceManager();
+	
+		$session = $serviceManager->get('Session')->getSession();
+		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
+		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId());
+		try {
+			return $serviceManager->get('Validationrequest')->getValidationrequestByEmailaddressId($emailaddress_id);
+		} catch (\Exception $exception) {
+		}
+		return;
+	}
 
 	/**
 	 * Sendet die E-Mail Adressvalidierung erneut
