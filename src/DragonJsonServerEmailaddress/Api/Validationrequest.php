@@ -28,10 +28,10 @@ class Validationrequest
 		$session = $serviceManager->get('Session')->getSession();
 		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
 		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId());
-		try {
-			return $serviceManager->get('Validationrequest')->getValidationrequestByEmailaddressId($emailaddress_id)->toArray();
-		} catch (\Exception $exception) {
-		}
+		$validationrequest = $serviceManager->get('Validationrequest')->getValidationrequestByEmailaddressId($emailaddress_id, false); 
+		if (null !== $validationrequest) {
+			return $validationrequest->toArray();
+		} 
 		return;
 	}
 

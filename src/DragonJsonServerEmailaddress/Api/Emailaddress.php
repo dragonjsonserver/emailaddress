@@ -27,11 +27,7 @@ class Emailaddress
 		
 		$serviceEmailaddress = $serviceManager->get('Emailaddress');
 		$serviceEmailaddress->validateEmailaddress($emailaddress);
-		try {
-			$entity = $serviceEmailaddress->getEmailaddressByEmailaddress($emailaddress);
-		} catch (\Exception $exception) {
-		}
-		if (isset($entity)) {
+		if (null !== $serviceEmailaddress->getEmailaddressByEmailaddress($emailaddress, false)) {
 			throw new \DragonJsonServer\Exception('emailaddress not unique', ['emailaddress' => $emailaddress]);
 		}
 	}
@@ -105,9 +101,9 @@ class Emailaddress
 		
 		$session = $serviceManager->get('Session')->getSession();
 		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
-		try {
-			return $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId())->toArray();
-		} catch (\Exception $exception) {
+		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId(), false);
+		if (null !== $emailaddress) {
+			return $emailaddress->toArray();
 		}
 		return;
 	}
