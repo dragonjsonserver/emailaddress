@@ -106,7 +106,7 @@ class Emailaddress
 		$session = $serviceManager->get('Session')->getSession();
 		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
 		try {
-			return $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId());
+			return $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId())->toArray();
 		} catch (\Exception $exception) {
 		}
 		return;

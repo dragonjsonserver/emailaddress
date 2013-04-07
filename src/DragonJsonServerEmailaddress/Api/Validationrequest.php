@@ -29,7 +29,7 @@ class Validationrequest
 		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
 		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId());
 		try {
-			return $serviceManager->get('Validationrequest')->getValidationrequestByEmailaddressId($emailaddress_id);
+			return $serviceManager->get('Validationrequest')->getValidationrequestByEmailaddressId($emailaddress_id)->toArray();
 		} catch (\Exception $exception) {
 		}
 		return;
