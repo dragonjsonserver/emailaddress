@@ -12,17 +12,17 @@ namespace DragonJsonServerEmailaddress\Event;
 /**
  * Eventklasse für die Validierung einer E-Mail Adresse
  */
-class Validate extends \Zend\EventManager\Event
+class ValidateEmailaddress extends \Zend\EventManager\Event
 {
 	/**
 	 * @var string
 	 */
-	protected $name = 'validate';
+	protected $name = 'validateemailaddress';
 
     /**
      * Setzt die E-Mail Adressvalidierungsanfrage
      * @param \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest
-     * @return Validate
+     * @return ValidateEmailaddress
      */
     public function setValidationrequest(\DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest)
     {

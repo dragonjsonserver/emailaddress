@@ -12,17 +12,17 @@ namespace DragonJsonServerEmailaddress\Event;
 /**
  * Eventklasse für die Login eines Accounts mit einer E-Mail Adresse
  */
-class Login extends \Zend\EventManager\Event
+class LoginAccount extends \Zend\EventManager\Event
 {
 	/**
 	 * @var string
 	 */
-	protected $name = 'login';
+	protected $name = 'loginaccount';
 
     /**
      * Setzt die E-Mail Adresse die mit dem Account eingeloggt wurde
      * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
-     * @return Login
+     * @return LoginAccount
      */
     public function setEmailaddress(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress)
     {

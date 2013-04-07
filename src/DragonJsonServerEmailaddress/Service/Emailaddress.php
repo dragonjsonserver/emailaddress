@@ -150,7 +150,7 @@ class Emailaddress
 		$emailaddress = $this->getEmailaddressByEmailaddress($emailaddress);
 		$emailaddress->verifyPassword($password);
 		$this->getEventManager()->trigger(
-			(new \DragonJsonServerEmailaddress\Event\Login())
+			(new \DragonJsonServerEmailaddress\Event\LoginAccount())
 				->setTarget($this)
 				->setEmailaddress($emailaddress)
 		);

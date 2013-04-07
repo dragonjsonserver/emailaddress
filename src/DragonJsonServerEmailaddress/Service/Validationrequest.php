@@ -97,7 +97,7 @@ class Validationrequest
 			throw new \DragonJsonServer\Exception('incorrect validationrequesthash');
 		}
 		$this->getEventManager()->trigger(
-			(new \DragonJsonServerEmailaddress\Event\Validate())
+			(new \DragonJsonServerEmailaddress\Event\ValidateEmailaddress())
 				->setTarget($this)
 				->setValidationrequest($validationrequest)
 		);
