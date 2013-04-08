@@ -77,7 +77,7 @@ class Emailaddress
 	 * @param string $password
 	 * @return array
 	 */
-	public function loginAccount($emailaddress, $password)
+	public function loginEmailaddress($emailaddress, $password)
 	{
 		$serviceManager = $this->getServiceManager();
 
