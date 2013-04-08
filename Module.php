@@ -37,4 +37,23 @@ class Module
             ],
         ];
     }
+    
+    /**
+     * Wird bei der Initialisierung des Moduls aufgerufen
+     * @param \Zend\ModuleManager\ModuleManager $moduleManager
+     */
+    public function init(\Zend\ModuleManager\ModuleManager $moduleManager)
+    {
+    	$sharedManager = $moduleManager->getEventManager()->getSharedManager();
+    	$sharedManager->attach('DragonJsonServerAccount\Service\Account', 'removeaccount', 
+	    	function (\DragonJsonServerAccount\Event\RemoveAccount $removeAccount) {
+	    		$account = $removeAccount->getAccount();
+	    		$serviceEmailaddress = $this->getServiceManager()->get('Emailaddress');
+	    		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($account->getAccountId(), false);
+	    		if (null !== $emailaddress) {
+	    			$serviceEmailaddress->removeEmailaddress($emailaddress);
+	    		}
+	    	}
+    	);
+    }
 }
