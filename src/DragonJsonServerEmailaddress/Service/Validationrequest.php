@@ -19,24 +19,24 @@ class Validationrequest
 	use \DragonJsonServerDoctrine\EntityManagerTrait;
 	
 	/**
-	 * Gibt die E-Mail Adressvalidierung zur übergebenen EmailaddressID zurück
-	 * @param integer $emailaddress_id
-	 * @param boolean $throwException
-	 * @return \DragonJsonServerEmailaddress\Entity\Validationrequest
-     * @throws \DragonJsonServer\Exception
+	 * Erstellt eine Anfrage für eine E-Mail Adressvalidierung
+	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
 	 */
-	public function getValidationrequestByEmailaddressId($emailaddress_id, $throwException = true)
+	public function createValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress)
 	{
 		$entityManager = $this->getEntityManager();
 
-		$conditions = ['emailaddress_id' => $emailaddress_id];
-		$validationrequest = $entityManager
-			->getRepository('\DragonJsonServerEmailaddress\Entity\Validationrequest')
-			->findOneBy($conditions);
-		if (null === $validationrequest && $throwException) {
-			throw new \DragonJsonServer\Exception('invalid emailaddress_id', $conditions);
+		$emailaddress_id = $emailaddress->getEmailaddressId();
+		$validationrequest = $this->getServiceManager()->get('Validationrequest')
+			->getValidationrequestByEmailaddressId($emailaddress_id, false);
+		if (null === $validationrequest) {
+			$validationrequest = (new \DragonJsonServerEmailaddress\Entity\Validationrequest())
+				->setEmailaddressId($emailaddress_id)
+				->setValidationrequesthash(md5($emailaddress_id . microtime(true)));
+			$entityManager->persist($validationrequest);
+			$entityManager->flush();
 		}
-		return $validationrequest;
+		$this->sendValidationrequest($emailaddress, $validationrequest);
 	}
 	
 	/**
@@ -61,24 +61,24 @@ class Validationrequest
 	}
 	
 	/**
-	 * Erstellt eine Anfrage für eine E-Mail Adressvalidierung
-	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
+	 * Gibt die E-Mail Adressvalidierung zur übergebenen EmailaddressID zurück
+	 * @param integer $emailaddress_id
+	 * @param boolean $throwException
+	 * @return \DragonJsonServerEmailaddress\Entity\Validationrequest
+     * @throws \DragonJsonServer\Exception
 	 */
-	public function createValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress)
+	public function getValidationrequestByEmailaddressId($emailaddress_id, $throwException = true)
 	{
 		$entityManager = $this->getEntityManager();
 
-		$emailaddress_id = $emailaddress->getEmailaddressId();
-		$validationrequest = $this->getServiceManager()->get('Validationrequest')
-			->getValidationrequestByEmailaddressId($emailaddress_id, false);
-		if (null === $validationrequest) {
-			$validationrequest = (new \DragonJsonServerEmailaddress\Entity\Validationrequest())
-				->setEmailaddressId($emailaddress_id)
-				->setValidationrequesthash(md5($emailaddress_id . microtime(true)));
-			$entityManager->persist($validationrequest);
-			$entityManager->flush();
+		$conditions = ['emailaddress_id' => $emailaddress_id];
+		$validationrequest = $entityManager
+			->getRepository('\DragonJsonServerEmailaddress\Entity\Validationrequest')
+			->findOneBy($conditions);
+		if (null === $validationrequest && $throwException) {
+			throw new \DragonJsonServer\Exception('invalid emailaddress_id', $conditions);
 		}
-		$this->sendValidationrequest($emailaddress, $validationrequest);
+		return $validationrequest;
 	}
 	
 	/**
