@@ -38,7 +38,7 @@ class Emailaddress
 	 * @param string $password
 	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
 	 */
-	public function linkAccount(\DragonJsonServerAccount\Entity\Account $account, 
+	public function createEmailaddress(\DragonJsonServerAccount\Entity\Account $account, 
 								$emailaddress, 
 								$password)
 	{
@@ -51,7 +51,7 @@ class Emailaddress
 		$entityManager->persist($emailaddress);
 		$entityManager->flush();
 		$this->getEventManager()->trigger(
-			(new \DragonJsonServerEmailaddress\Event\LinkAccount())
+			(new \DragonJsonServerEmailaddress\Event\CreateEmailaddress())
 				->setTarget($this)
 				->setAccount($account)
 				->setEmailaddress($emailaddress)
@@ -67,7 +67,7 @@ class Emailaddress
      * @throws \DragonJsonServer\Exception
      * @return Emailaddress
 	 */
-	public function unlinkAccount(\DragonJsonServerAccount\Entity\Account $account)
+	public function removeEmailaddress(\DragonJsonServerAccount\Entity\Account $account)
 	{
 		$entityManager = $this->getEntityManager();
 
@@ -77,7 +77,7 @@ class Emailaddress
 			throw new \DragonJsonServer\Exception('missing emailaddress', ['account' => $account->toArray()]);
 		}
 		$this->getEventManager()->trigger(
-			(new \DragonJsonServerEmailaddress\Event\UnlinkAccount())
+			(new \DragonJsonServerEmailaddress\Event\RemoveEmailaddress())
 				->setTarget($this)
 				->setAccount($account)
 				->setEmailaddress($emailaddress)

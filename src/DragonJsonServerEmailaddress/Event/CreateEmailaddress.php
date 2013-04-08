@@ -12,17 +12,17 @@ namespace DragonJsonServerEmailaddress\Event;
 /**
  * Eventklasse für die Verknüpfung eines Accounts mit einer E-Mail Adresse
  */
-class LinkAccount extends \Zend\EventManager\Event
+class CreateEmailaddress extends \Zend\EventManager\Event
 {
 	/**
 	 * @var string
 	 */
-	protected $name = 'linkaccount';
+	protected $name = 'createemailaddress';
 
     /**
      * Setzt den Account der mit der E-Mail Adresse verknüpft wurde
      * @param \DragonJsonServerAccount\Entity\Account $account
-     * @return LinkAccount
+     * @return CreateEmailaddress
      */
     public function setAccount(\DragonJsonServerAccount\Entity\Account $account)
     {
@@ -42,7 +42,7 @@ class LinkAccount extends \Zend\EventManager\Event
     /**
      * Setzt die E-Mail Adresse die mit dem Account verknüpft wurde
      * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
-     * @return LinkAccount
+     * @return CreateEmailaddress
      */
     public function setEmailaddress(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress)
     {

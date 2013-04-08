@@ -10,19 +10,19 @@
 namespace DragonJsonServerEmailaddress\Event;
 
 /**
- * Eventklasse für die Trennung eines Accounts mit einer E-Mail Adresse
+ * Eventklasse für die Trennung eines Accounts von einer E-Mail Adresse
  */
-class UnlinkAccount extends \Zend\EventManager\Event
+class RemoveEmailaddress extends \Zend\EventManager\Event
 {
 	/**
 	 * @var string
 	 */
-	protected $name = 'unlinkaccount';
+	protected $name = 'removeemailaddress';
 
     /**
      * Setzt den Account der mit der E-Mail Adresse getrennt wurde
      * @param \DragonJsonServerAccount\Entity\Account $account
-     * @return UnlinkAccount
+     * @return RemoveEmailaddress
      */
     public function setAccount(\DragonJsonServerAccount\Entity\Account $account)
     {
@@ -42,7 +42,7 @@ class UnlinkAccount extends \Zend\EventManager\Event
     /**
      * Setzt die E-Mail Adresse die mit dem Account getrennt wurde
      * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
-     * @return UnlinkAccount
+     * @return RemoveEmailaddress
      */
     public function setEmailaddress(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress)
     {

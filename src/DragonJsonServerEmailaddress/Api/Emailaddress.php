@@ -38,7 +38,7 @@ class Emailaddress
 	 * @param string $password
 	 * @session
 	 */
-	public function linkAccount($emailaddress, $password)
+	public function createEmailaddress($emailaddress, $password)
 	{
 		$this->validateEmailaddress($emailaddress);
 		$serviceManager = $this->getServiceManager();
@@ -46,7 +46,7 @@ class Emailaddress
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
 		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
-		$emailaddress = $serviceManager->get('Emailaddress')->linkAccount($account, $emailaddress, $password);
+		$emailaddress = $serviceManager->get('Emailaddress')->createEmailaddress($account, $emailaddress, $password);
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();
 		$session->setData($data);
@@ -54,17 +54,17 @@ class Emailaddress
 	}
 	
     /**
-	 * Entfernt die E-Mail Adressverknüpfung für den Account
+	 * Entfernt die E-Mail Adressverknüpfung für den aktuellen Account
 	 * @session
 	 */
-	public function unlinkAccount()
+	public function removeEmailaddress()
 	{
 		$serviceManager = $this->getServiceManager();
 
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
 		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
-		$serviceManager->get('Emailaddress')->unlinkAccount($account);
+		$serviceManager->get('Emailaddress')->removeEmailaddress($account);
 		$data = $session->getData();
 		unset($data['emailaddress']);
 		$session->setData($data);
