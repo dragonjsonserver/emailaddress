@@ -45,7 +45,7 @@ class Emailaddress
 
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
-		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
+		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
 		$emailaddress = $serviceManager->get('Emailaddress')->linkAccount($account, $emailaddress, $password);
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();
@@ -63,7 +63,7 @@ class Emailaddress
 
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
-		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
+		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
 		$serviceManager->get('Emailaddress')->unlinkAccount($account);
 		$data = $session->getData();
 		unset($data['emailaddress']);
@@ -83,7 +83,7 @@ class Emailaddress
 
 		$emailaddress = $serviceManager->get('Emailaddress')
 			->getEmailaddressByEmailaddressAndPassword($emailaddress, $password);
-		$account = $serviceManager->get('Account')->getAccount($emailaddress->getAccountId());
+		$account = $serviceManager->get('Account')->getAccountByAccountId($emailaddress->getAccountId());
 		$serviceSession = $serviceManager->get('Session');
 		$session = $serviceSession->createSession($account, ['emailaddress' => $emailaddress->toArray()]);
 		$serviceSession->setSession($session);
@@ -100,7 +100,7 @@ class Emailaddress
 		$serviceManager = $this->getServiceManager();
 		
 		$session = $serviceManager->get('Session')->getSession();
-		$account = $serviceManager->get('Account')->getAccount($session->getAccountId());
+		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
 		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId(), false);
 		if (null !== $emailaddress) {
 			return $emailaddress->toArray();
