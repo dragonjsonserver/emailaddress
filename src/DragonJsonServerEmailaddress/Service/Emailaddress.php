@@ -183,9 +183,9 @@ class Emailaddress
 	 */
 	public function changeEmailaddress($account_id, $newemailaddress)
 	{
-		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($newemailaddress) {
-			$emailaddress = $this->getEmailaddressByAccountId($account_id);
-			$emailaddress->setEmailaddress($newemailaddress);
+		$emailaddress = $this->getEmailaddressByAccountId($account_id);
+		$emailaddress->setEmailaddress($newemailaddress);
+		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
 			$entityManager->persist($emailaddress);
 			$entityManager->flush();
 			$this->getServiceManager()->get('Validationrequest')
