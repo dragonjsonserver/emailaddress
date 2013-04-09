@@ -11,7 +11,7 @@
  * @return array
  */
 return [
-	'emailaddress' => [
+	'dragonjsonserveremailaddress' => [
 		'from' => '%from%',
 		'validationrequest' => [
 			'subject' => '%subject%',

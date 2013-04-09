@@ -11,7 +11,7 @@
  * @return array
  */
 return [
-	'emailaddress' => [
+	'dragonjsonserveremailaddress' => [
 		'from' => 'noreply@dragonjsonserver.de',
 		'validationrequest' => [
 			'subject' => 'validationrequest',
@@ -22,10 +22,12 @@ return [
 			'body' => '%passwordrequesthash%',
 		],
 	],
-    'apiclasses' => [
-        '\DragonJsonServerEmailaddress\Api\Emailaddress' => 'Emailaddress',
-        '\DragonJsonServerEmailaddress\Api\Validationrequest' => 'Validationrequest',
-        '\DragonJsonServerEmailaddress\Api\Passwordrequest' => 'Passwordrequest',
+	'dragonjsonserver' => [
+	    'apiclasses' => [
+	        '\DragonJsonServerEmailaddress\Api\Emailaddress' => 'Emailaddress',
+	        '\DragonJsonServerEmailaddress\Api\Validationrequest' => 'Validationrequest',
+	        '\DragonJsonServerEmailaddress\Api\Passwordrequest' => 'Passwordrequest',
+	    ],
     ],
 	'service_manager' => [
 		'invokables' => [

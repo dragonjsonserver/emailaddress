@@ -32,15 +32,15 @@ class Passwordrequest
 			->setEmailaddressId($emailaddress->getEmailaddressId())
 			->setPasswordrequesthash($passwordrequesthash));
 		$entityManager->flush();
-		$configEmailaddress = $this->getServiceManager()->get('Config')['emailaddress'];
+		$config = $this->getServiceManager()->get('Config')['dragonjsonserveremailaddress'];
 		$message = (new \Zend\Mail\Message())
 			->addTo($emailaddress->getEmailaddress())
-	        ->addFrom($configEmailaddress['from'])
-	        ->setSubject($configEmailaddress['passwordrequest']['subject'])
+	        ->addFrom($config['from'])
+	        ->setSubject($config['passwordrequest']['subject'])
 	        ->setBody(str_replace(
 	        	'%passwordrequesthash%', 
 	        	$passwordrequesthash, 
-	        	$configEmailaddress['passwordrequest']['body']
+	        	$config['passwordrequest']['body']
 	        ));
 		(new \Zend\Mail\Transport\Sendmail())->send($message);
 	}

@@ -47,15 +47,15 @@ class Validationrequest
 	public function sendValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress,
 										  \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest)
 	{
-		$configEmailaddress = $this->getServiceManager()->get('Config')['emailaddress'];
+		$config = $this->getServiceManager()->get('Config')['dragonjsonserveremailaddress'];
 		$message = (new \Zend\Mail\Message())
 			->addTo($emailaddress->getEmailaddress())
-			->addFrom($configEmailaddress['from'])
-			->setSubject($configEmailaddress['validationrequest']['subject'])
+			->addFrom($config['from'])
+			->setSubject($config['validationrequest']['subject'])
 			->setBody(str_replace(
 					'%validationrequesthash%',
 					$validationrequest->getValidationrequesthash(),
-					$configEmailaddress['validationrequest']['body']
+					$config['validationrequest']['body']
 			));
 		(new \Zend\Mail\Transport\Sendmail())->send($message);
 	}
