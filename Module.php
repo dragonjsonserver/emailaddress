@@ -14,6 +14,8 @@ namespace DragonJsonServerEmailaddress;
  */
 class Module
 {
+	use \DragonJsonServer\ServiceManagerTrait;
+	
     /**
      * Gibt die Konfiguration des Moduls zurück
      * @return array

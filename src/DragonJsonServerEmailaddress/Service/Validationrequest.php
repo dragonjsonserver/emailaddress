@@ -97,12 +97,14 @@ class Validationrequest
 		if (null === $validationrequest) {
 			throw new \DragonJsonServer\Exception('invalid validationrequesthash', $conditions);
 		}
-		$this->getEventManager()->trigger(
-			(new \DragonJsonServerEmailaddress\Event\ValidateEmailaddress())
-				->setTarget($this)
-				->setValidationrequest($validationrequest)
-		);
-		$entityManager->remove($validationrequest);
-		$entityManager->flush();
+		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($validationrequest) {
+			$this->getEventManager()->trigger(
+				(new \DragonJsonServerEmailaddress\Event\ValidateEmailaddress())
+					->setTarget($this)
+					->setValidationrequest($validationrequest)
+			);
+			$entityManager->remove($validationrequest);
+			$entityManager->flush();
+		});
 	}
 }

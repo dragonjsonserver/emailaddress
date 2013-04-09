@@ -38,9 +38,7 @@ class Emailaddress
 	 * @param string $password
 	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
 	 */
-	public function createEmailaddress(\DragonJsonServerAccount\Entity\Account $account, 
-								$emailaddress, 
-								$password)
+	public function createEmailaddress(\DragonJsonServerAccount\Entity\Account $account, $emailaddress, $password)
 	{
 		$entityManager = $this->getEntityManager();
 		
@@ -48,16 +46,18 @@ class Emailaddress
 			->setAccountId($account->getAccountId())
 			->setEmailaddress($emailaddress)
 			->setPassword($password);
-		$entityManager->persist($emailaddress);
-		$entityManager->flush();
-		$this->getEventManager()->trigger(
-			(new \DragonJsonServerEmailaddress\Event\CreateEmailaddress())
-				->setTarget($this)
-				->setAccount($account)
-				->setEmailaddress($emailaddress)
-		);
-		$this->getServiceManager()->get('Validationrequest')
-			->createValidationrequest($emailaddress);
+		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($account, $emailaddress) {
+			$entityManager->persist($emailaddress);
+			$entityManager->flush();
+			$this->getEventManager()->trigger(
+				(new \DragonJsonServerEmailaddress\Event\CreateEmailaddress())
+					->setTarget($this)
+					->setAccount($account)
+					->setEmailaddress($emailaddress)
+			);
+			$this->getServiceManager()->get('Validationrequest')
+				->createValidationrequest($emailaddress);
+		});
 		return $emailaddress;
 	}
 	
@@ -76,27 +76,29 @@ class Emailaddress
 		if (null === $emailaddress) {
 			throw new \DragonJsonServer\Exception('missing emailaddress', ['account' => $account->toArray()]);
 		}
-		$this->getEventManager()->trigger(
-			(new \DragonJsonServerEmailaddress\Event\RemoveEmailaddress())
-				->setTarget($this)
-				->setAccount($account)
-				->setEmailaddress($emailaddress)
-		);
-		$emailaddress_id = $emailaddress->getEmailaddressId();
-		$entityManager
-			->createQuery('
-				DELETE FROM \DragonJsonServerEmailaddress\Entity\Passwordrequest passwordrequest
-				WHERE passwordrequest.emailaddress_id = :emailaddress_id
-			')
-			->execute(['emailaddress_id' => $emailaddress_id]);
-		$entityManager
-			->createQuery('
-				DELETE FROM \DragonJsonServerEmailaddress\Entity\Validationrequest validationrequest
-				WHERE validationrequest.emailaddress_id = :emailaddress_id
-			')
-			->execute(['emailaddress_id' => $emailaddress_id]);
-		$entityManager->remove($emailaddress);
-		$entityManager->flush();
+		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($account, $emailaddress) {
+			$this->getEventManager()->trigger(
+				(new \DragonJsonServerEmailaddress\Event\RemoveEmailaddress())
+					->setTarget($this)
+					->setAccount($account)
+					->setEmailaddress($emailaddress)
+			);
+			$emailaddress_id = $emailaddress->getEmailaddressId();
+			$entityManager
+				->createQuery('
+					DELETE FROM \DragonJsonServerEmailaddress\Entity\Passwordrequest passwordrequest
+					WHERE passwordrequest.emailaddress_id = :emailaddress_id
+				')
+				->execute(['emailaddress_id' => $emailaddress_id]);
+			$entityManager
+				->createQuery('
+					DELETE FROM \DragonJsonServerEmailaddress\Entity\Validationrequest validationrequest
+					WHERE validationrequest.emailaddress_id = :emailaddress_id
+				')
+				->execute(['emailaddress_id' => $emailaddress_id]);
+			$entityManager->remove($emailaddress);
+			$entityManager->flush();
+		});
 		return $this;
 	}
 	
@@ -181,14 +183,14 @@ class Emailaddress
 	 */
 	public function changeEmailaddress($account_id, $newemailaddress)
 	{
-		$entityManager = $this->getEntityManager();
-		
-		$emailaddress = $this->getEmailaddressByAccountId($account_id);
-		$emailaddress->setEmailaddress($newemailaddress);
-		$entityManager->persist($emailaddress);
-		$entityManager->flush();
-		$this->getServiceManager()->get('Validationrequest')
-			->createValidationrequest($emailaddress);
+		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($newemailaddress) {
+			$emailaddress = $this->getEmailaddressByAccountId($account_id);
+			$emailaddress->setEmailaddress($newemailaddress);
+			$entityManager->persist($emailaddress);
+			$entityManager->flush();
+			$this->getServiceManager()->get('Validationrequest')
+				->createValidationrequest($emailaddress);
+		});
 		return $this;
 	}
 	

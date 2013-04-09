@@ -62,10 +62,12 @@ class Passwordrequest
 		if (null === $passwordrequest) {
 			throw new \DragonJsonServer\Exception('invalid passwordrequesthash', $conditions);
 		}
-		$serviceEmailaddress = $this->getServiceManager()->get('Emailaddress');
-		$emailaddress = $serviceEmailaddress->getEmailaddressByEmailaddressId($passwordrequest->getEmailaddressId());
-		$serviceEmailaddress->changePassword($emailaddress, $newpassword);
-		$entityManager->remove($passwordrequest);
-		$entityManager->flush();
+		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($newpassword, $passwordrequest) {
+			$serviceEmailaddress = $this->getServiceManager()->get('Emailaddress');
+			$emailaddress = $serviceEmailaddress->getEmailaddressByEmailaddressId($passwordrequest->getEmailaddressId());
+			$serviceEmailaddress->changePassword($emailaddress, $newpassword);
+			$entityManager->remove($passwordrequest);
+			$entityManager->flush();
+		});
 	}
 }
