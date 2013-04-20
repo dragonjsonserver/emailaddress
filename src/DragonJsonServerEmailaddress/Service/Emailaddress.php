@@ -33,26 +33,25 @@ class Emailaddress
 	
     /**
 	 * Erstellt eine neue E-Mail Adressverknüpfung für den Account
-	 * @param \DragonJsonServerAccount\Entity\Account $account
+     * @param integer $account_id
 	 * @param string $emailaddress
 	 * @param string $password
 	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
 	 */
-	public function createEmailaddress(\DragonJsonServerAccount\Entity\Account $account, $emailaddress, $password)
+	public function createEmailaddress($account_id, $emailaddress, $password)
 	{
 		$entityManager = $this->getEntityManager();
 		
 		$emailaddress = (new \DragonJsonServerEmailaddress\Entity\Emailaddress())
-			->setAccountId($account->getAccountId())
+			->setAccountId($account_id)
 			->setEmailaddress($emailaddress)
 			->setPassword($password);
-		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($account, $emailaddress) {
+		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
 			$entityManager->persist($emailaddress);
 			$entityManager->flush();
 			$this->getEventManager()->trigger(
 				(new \DragonJsonServerEmailaddress\Event\CreateEmailaddress())
 					->setTarget($this)
-					->setAccount($account)
 					->setEmailaddress($emailaddress)
 			);
 			$this->getServiceManager()->get('Validationrequest')
@@ -63,24 +62,23 @@ class Emailaddress
 	
     /**
 	 * Entfernt die E-Mail Adressverknüpfung für den Account
-	 * @param \DragonJsonServerAccount\Entity\Account $account
+     * @param integer $account_id
      * @throws \DragonJsonServer\Exception
      * @return Emailaddress
 	 */
-	public function removeEmailaddress(\DragonJsonServerAccount\Entity\Account $account)
+	public function removeEmailaddress($account_id)
 	{
 		$entityManager = $this->getEntityManager();
 
 		$emailaddress = $entityManager->getRepository('\DragonJsonServerEmailaddress\Entity\Emailaddress')
-								      ->findOneBy(['account_id' => $account->getAccountId()]);
+								      ->findOneBy(['account_id' => $account_id]);
 		if (null === $emailaddress) {
-			throw new \DragonJsonServer\Exception('missing emailaddress', ['account' => $account->toArray()]);
+			throw new \DragonJsonServer\Exception('missing emailaddress', ['account_id' => $account_id]);
 		}
-		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($account, $emailaddress) {
+		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
 			$this->getEventManager()->trigger(
 				(new \DragonJsonServerEmailaddress\Event\RemoveEmailaddress())
 					->setTarget($this)
-					->setAccount($account)
 					->setEmailaddress($emailaddress)
 			);
 			$emailaddress_id = $emailaddress->getEmailaddressId();

@@ -83,9 +83,8 @@ class Emailaddress
 
 		$emailaddress = $serviceManager->get('Emailaddress')
 			->getEmailaddressByEmailaddressAndPassword($emailaddress, $password);
-		$account = $serviceManager->get('Account')->getAccountByAccountId($emailaddress->getAccountId());
 		$serviceSession = $serviceManager->get('Session');
-		$session = $serviceSession->createSession($account, ['emailaddress' => $emailaddress->toArray()]);
+		$session = $serviceSession->createSession($emailaddress->getAccountId(), ['emailaddress' => $emailaddress->toArray()]);
 		$serviceSession->setSession($session);
 		return $session->toArray();
 	}

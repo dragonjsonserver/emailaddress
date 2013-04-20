@@ -20,26 +20,6 @@ class RemoveEmailaddress extends \Zend\EventManager\Event
 	protected $name = 'removeemailaddress';
 
     /**
-     * Setzt den Account der mit der E-Mail Adresse getrennt wurde
-     * @param \DragonJsonServerAccount\Entity\Account $account
-     * @return RemoveEmailaddress
-     */
-    public function setAccount(\DragonJsonServerAccount\Entity\Account $account)
-    {
-        $this->setParam('account', $account);
-        return $this;
-    }
-
-    /**
-     * Gibt den Account der mit der E-Mail Adresse getrennt wurde zurück
-     * @return \DragonJsonServerAccount\Entity\Account
-     */
-    public function getAccount()
-    {
-        return $this->getParam('account');
-    }
-
-    /**
      * Setzt die E-Mail Adresse die mit dem Account getrennt wurde
      * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
      * @return RemoveEmailaddress

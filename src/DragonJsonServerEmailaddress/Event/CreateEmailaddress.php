@@ -20,26 +20,6 @@ class CreateEmailaddress extends \Zend\EventManager\Event
 	protected $name = 'createemailaddress';
 
     /**
-     * Setzt den Account der mit der E-Mail Adresse verknüpft wurde
-     * @param \DragonJsonServerAccount\Entity\Account $account
-     * @return CreateEmailaddress
-     */
-    public function setAccount(\DragonJsonServerAccount\Entity\Account $account)
-    {
-        $this->setParam('account', $account);
-        return $this;
-    }
-
-    /**
-     * Gibt den Account der mit der E-Mail Adresse verknüpft wurde zurück
-     * @return \DragonJsonServerAccount\Entity\Account
-     */
-    public function getAccount()
-    {
-        return $this->getParam('account');
-    }
-
-    /**
      * Setzt die E-Mail Adresse die mit dem Account verknüpft wurde
      * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
      * @return CreateEmailaddress
