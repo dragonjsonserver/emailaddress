@@ -97,7 +97,6 @@ class Emailaddress
 		$serviceManager = $this->getServiceManager();
 		
 		$session = $serviceManager->get('Session')->getSession();
-		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
 		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId(), false);
 		if (null !== $emailaddress) {
 			return $emailaddress->toArray();
