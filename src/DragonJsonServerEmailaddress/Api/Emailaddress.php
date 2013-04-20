@@ -62,8 +62,7 @@ class Emailaddress
 
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
-		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
-		$serviceManager->get('Emailaddress')->removeEmailaddress($account);
+		$serviceManager->get('Emailaddress')->removeEmailaddress($session->getAccountId());
 		$data = $session->getData();
 		unset($data['emailaddress']);
 		$session->setData($data);
