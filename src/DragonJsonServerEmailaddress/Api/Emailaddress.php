@@ -45,8 +45,7 @@ class Emailaddress
 
 		$sessionService = $serviceManager->get('Session');
 		$session = $sessionService->getSession();
-		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
-		$emailaddress = $serviceManager->get('Emailaddress')->createEmailaddress($account, $emailaddress, $password);
+		$emailaddress = $serviceManager->get('Emailaddress')->createEmailaddress($session->getAccountId(), $emailaddress, $password);
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();
 		$session->setData($data);
