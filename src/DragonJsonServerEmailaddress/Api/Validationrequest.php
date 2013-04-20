@@ -26,7 +26,6 @@ class Validationrequest
 		$serviceManager = $this->getServiceManager();
 	
 		$session = $serviceManager->get('Session')->getSession();
-		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
 		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId());
 		$validationrequest = $serviceManager->get('Validationrequest')
 			->getValidationrequestByEmailaddressId($emailaddress->getEmailaddressId(), false); 
@@ -45,9 +44,8 @@ class Validationrequest
 		$serviceManager = $this->getServiceManager();
 
 		$session = $serviceManager->get('Session')->getSession();
-		$account = $serviceManager->get('Account')->getAccountByAccountId($session->getAccountId());
 		$serviceEmailaddress = $serviceManager->get('Emailaddress');
-		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($account->getAccountId());
+		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($session->getAccountId());
 		$serviceValidationrequest = $serviceManager->get('Validationrequest');
 		$validationrequest = $serviceValidationrequest->getValidationrequestByEmailaddressId($emailaddress->getEmailaddressId());
 		$serviceValidationrequest->sendValidationrequest($emailaddress, $validationrequest);
