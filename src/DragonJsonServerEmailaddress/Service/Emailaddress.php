@@ -121,7 +121,7 @@ class Emailaddress
 	 * Gibt die E-Mail Adresse zur übergebenen AccountID zurück
 	 * @param integer $account_id
 	 * @param boolean $throwException
-	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
+	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress|null
      * @throws \DragonJsonServer\Exception
 	 */
 	public function getEmailaddressByAccountId($account_id, $throwException = true)

@@ -64,7 +64,7 @@ class Validationrequest
 	 * Gibt die E-Mail Adressvalidierung zur übergebenen EmailaddressID zurück
 	 * @param integer $emailaddress_id
 	 * @param boolean $throwException
-	 * @return \DragonJsonServerEmailaddress\Entity\Validationrequest
+	 * @return \DragonJsonServerEmailaddress\Entity\Validationrequest|null
      * @throws \DragonJsonServer\Exception
 	 */
 	public function getValidationrequestByEmailaddressId($emailaddress_id, $throwException = true)
