@@ -142,7 +142,7 @@ class Emailaddress
 	 * Gibt die E-Mail Adresse der übergebenen E-Mail Adresse zurück
 	 * @param string $emailaddress
 	 * @param boolean $throwException
-	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress
+	 * @return \DragonJsonServerEmailaddress\Entity\Emailaddress|null
      * @throws \DragonJsonServer\Exception
 	 */
 	public function getEmailaddressByEmailaddress($emailaddress, $throwException = true)
