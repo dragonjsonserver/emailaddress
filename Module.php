@@ -48,8 +48,8 @@ class Module
     {
     	$sharedManager = $moduleManager->getEventManager()->getSharedManager();
     	$sharedManager->attach('DragonJsonServerAccount\Service\Account', 'removeaccount', 
-	    	function (\DragonJsonServerAccount\Event\RemoveAccount $removeAccount) {
-	    		$account = $removeAccount->getAccount();
+	    	function (\DragonJsonServerAccount\Event\RemoveAccount $eventRemoveAccount) {
+	    		$account = $eventRemoveAccount->getAccount();
 	    		$serviceEmailaddress = $this->getServiceManager()->get('Emailaddress');
 	    		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($account->getAccountId(), false);
 	    		if (null !== $emailaddress) {
