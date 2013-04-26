@@ -19,7 +19,7 @@ class Validationrequest
 	/**
 	 * Gibt die E-Mail Adressvalidierung des aktuellen Accounts zurück
 	 * @return array|null
-	 * @session
+	 * @DragonJsonServerAccount\Annotation\Session
 	 */
 	public function getValidationrequest()
 	{
@@ -37,7 +37,7 @@ class Validationrequest
 
 	/**
 	 * Sendet die E-Mail Adressvalidierung erneut
-	 * @session
+	 * @DragonJsonServerAccount\Annotation\Session
 	 */
 	public function resendValidationrequest()
 	{

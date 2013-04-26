@@ -36,7 +36,7 @@ class Emailaddress
 	 * Erstellt eine neue E-Mail Adressverknüpfung für den Account
 	 * @param string $emailaddress
 	 * @param string $password
-	 * @session
+	 * @DragonJsonServerAccount\Annotation\Session
 	 */
 	public function createEmailaddress($emailaddress, $password)
 	{
@@ -54,7 +54,7 @@ class Emailaddress
 	
     /**
 	 * Entfernt die E-Mail Adressverknüpfung für den aktuellen Account
-	 * @session
+	 * @DragonJsonServerAccount\Annotation\Session
 	 */
 	public function removeEmailaddress()
 	{
@@ -90,7 +90,7 @@ class Emailaddress
 	/**
 	 * Gibt die E-Mail Adressverknüpfung des aktuellen Accounts zurück
 	 * @return array|null
-	 * @session
+	 * @DragonJsonServerAccount\Annotation\Session
 	 */
 	public function getEmailaddress()
 	{
@@ -107,7 +107,7 @@ class Emailaddress
 	/**
 	 * Ändert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param string $newemailaddress
-	 * @session
+	 * @DragonJsonServerAccount\Annotation\Session
 	 */
 	public function changeEmailaddress($newemailaddress)
 	{
@@ -131,7 +131,7 @@ class Emailaddress
 	/**
 	 * Ändert das Passwort der E-Mail Adressverknüpfung
 	 * @param string $newpassword
-	 * @session
+	 * @DragonJsonServerAccount\Annotation\Session
 	 */
 	public function changePassword($newpassword)
 	{
