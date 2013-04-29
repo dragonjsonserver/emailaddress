@@ -21,6 +21,7 @@ class Validationrequest
 	/**
 	 * Erstellt eine Anfrage für eine E-Mail Adressvalidierung
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
+	 * @return Validationrequest
 	 */
 	public function createValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress)
 	{
@@ -37,12 +38,14 @@ class Validationrequest
 			$entityManager->flush();
 		}
 		$this->sendValidationrequest($emailaddress, $validationrequest);
+		return $this;
 	}
 	
 	/**
 	 * Sendet die E-Mail Adressvalidierung
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
 	 * @param \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest
+	 * @return Validationrequest
 	 */
 	public function sendValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress,
 										  \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest)
@@ -58,6 +61,7 @@ class Validationrequest
 					$config['validationrequest']['body']
 			));
 		(new \Zend\Mail\Transport\Sendmail())->send($message);
+		return $this;
 	}
 	
 	/**
@@ -84,6 +88,7 @@ class Validationrequest
 	/**
 	 * Validiert die E-Mail Adresse der E-Mail Adressverknüpfung
 	 * @param string $validationrequesthash
+	 * @return Validationrequest
 	 * @throws \DragonJsonServer\Exception
 	 */
 	public function validateEmailaddress($validationrequesthash)
@@ -106,5 +111,6 @@ class Validationrequest
 			$entityManager->remove($validationrequest);
 			$entityManager->flush();
 		});
+		return $this;
 	}
 }

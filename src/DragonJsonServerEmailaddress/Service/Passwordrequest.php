@@ -20,6 +20,7 @@ class Passwordrequest
 	/**
 	 * Sendet eine E-Mail mit dem Hash zum Zurücksetzen des Passwortes
 	 * @param string $emailaddress
+	 * @return Passwordrequest
 	 */
 	public function requestPassword($emailaddress)
 	{
@@ -43,12 +44,14 @@ class Passwordrequest
 	        	$config['passwordrequest']['body']
 	        ));
 		(new \Zend\Mail\Transport\Sendmail())->send($message);
+		return $this;
 	}
 	
 	/**
 	 * Setzt das Passwort des übergebenen Hashes
 	 * @param string $passwordrequesthash
 	 * @param string $newpassword
+	 * @return Passwordrequest
 	 * @throws \DragonJsonServer\Exception
 	 */
 	public function resetPassword($passwordrequesthash, $newpassword)
@@ -69,5 +72,6 @@ class Passwordrequest
 			$entityManager->remove($passwordrequest);
 			$entityManager->flush();
 		});
+		return $this;
 	}
 }

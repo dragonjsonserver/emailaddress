@@ -21,6 +21,7 @@ class Emailaddress
 	/**
 	 * Validiert die übergebene E-Mail Adresse
 	 * @param string $emailaddress
+	 * @return Emailaddress
      * @throws \DragonJsonServer\Exception
 	 */
 	public function validateEmailaddress($emailaddress)
@@ -29,6 +30,7 @@ class Emailaddress
 		if (!$validator->isValid($emailaddress)) {
 			throw new \DragonJsonServer\Exception('invalid emailaddress', ['emailaddress' => $emailaddress]);
 		}
+		return $this;
 	}
 	
     /**
