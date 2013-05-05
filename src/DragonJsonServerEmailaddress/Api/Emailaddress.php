@@ -48,8 +48,7 @@ class Emailaddress
 		$emailaddress = $serviceManager->get('Emailaddress')->createEmailaddress($session->getAccountId(), $emailaddress, $password);
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();
-		$session->setData($data);
-		$sessionService->updateSession($session);
+		$sessionService->changeData($session, $data);
 	}
 	
     /**
@@ -65,8 +64,7 @@ class Emailaddress
 		$serviceManager->get('Emailaddress')->removeEmailaddress($session->getAccountId());
 		$data = $session->getData();
 		unset($data['emailaddress']);
-		$session->setData($data);
-		$sessionService->updateSession($session);
+		$sessionService->changeData($session, $data);
 	}
 	
     /**
@@ -123,8 +121,7 @@ class Emailaddress
 		$data = $session->getData();
 		if (isset($data['emailaddress'])) {
 			$data['emailaddress']['emailaddress'] = $newemailaddress;
-			$session->setData($data);
-			$sessionService->updateSession($session);
+			$sessionService->changeData($session, $data);
 		}
 	}
 	
