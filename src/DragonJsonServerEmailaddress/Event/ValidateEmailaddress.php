@@ -17,7 +17,7 @@ class ValidateEmailaddress extends \Zend\EventManager\Event
 	/**
 	 * @var string
 	 */
-	protected $name = 'validateemailaddress';
+	protected $name = 'ValidateEmailaddress';
 
     /**
      * Setzt die E-Mail Adressvalidierungsanfrage

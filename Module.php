@@ -47,7 +47,7 @@ class Module
     public function init(\Zend\ModuleManager\ModuleManager $moduleManager)
     {
     	$sharedManager = $moduleManager->getEventManager()->getSharedManager();
-    	$sharedManager->attach('DragonJsonServerAccount\Service\Account', 'removeaccount', 
+    	$sharedManager->attach('DragonJsonServerAccount\Service\Account', 'RemoveAccount', 
 	    	function (\DragonJsonServerAccount\Event\RemoveAccount $eventRemoveAccount) {
 	    		$account = $eventRemoveAccount->getAccount();
 	    		$serviceEmailaddress = $this->getServiceManager()->get('Emailaddress');

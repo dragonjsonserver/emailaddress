@@ -17,7 +17,7 @@ class CreateEmailaddress extends \Zend\EventManager\Event
 	/**
 	 * @var string
 	 */
-	protected $name = 'createemailaddress';
+	protected $name = 'CreateEmailaddress';
 
     /**
      * Setzt die E-Mail Adresse die mit dem Account verknüpft wurde

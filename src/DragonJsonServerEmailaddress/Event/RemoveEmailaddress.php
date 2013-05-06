@@ -17,7 +17,7 @@ class RemoveEmailaddress extends \Zend\EventManager\Event
 	/**
 	 * @var string
 	 */
-	protected $name = 'removeemailaddress';
+	protected $name = 'RemoveEmailaddress';
 
     /**
      * Setzt die E-Mail Adresse die mit dem Account getrennt wurde
