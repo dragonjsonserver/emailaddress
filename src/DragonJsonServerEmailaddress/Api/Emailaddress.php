@@ -49,6 +49,7 @@ class Emailaddress
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();
 		$sessionService->changeData($session, $data);
+		return $emailaddress->toArray();
 	}
 	
     /**
