@@ -67,6 +67,7 @@ class Passwordrequest
 	public function toArray()
 	{
 		return [
+			'entity' => 'Passwordrequest',
 			'passwordrequest_id' => $this->getPasswordrequestId(),
 			'created' => $this->getCreatedTimestamp(),
 			'emailaddress_id' => $this->getEmailaddressId(),

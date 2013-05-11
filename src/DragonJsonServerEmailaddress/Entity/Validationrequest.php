@@ -68,6 +68,7 @@ class Validationrequest
 	public function toArray()
 	{
 		return [
+			'entity' => 'Validationrequest',
 			'validationrequest_id' => $this->getValidationrequestId(),
 			'modified' => $this->getModifiedTimestamp(),
 			'created' => $this->getCreatedTimestamp(),

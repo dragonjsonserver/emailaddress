@@ -118,6 +118,7 @@ class Emailaddress
 	public function toArray()
 	{
 		return [
+			'entity' => 'Emailaddress',
 			'emailaddress_id' => $this->getEmailaddressId(),
 			'modified' => $this->getModifiedTimestamp(),
 			'created' => $this->getCreatedTimestamp(),
