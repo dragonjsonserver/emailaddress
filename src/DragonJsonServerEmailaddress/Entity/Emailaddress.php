@@ -38,6 +38,17 @@ class Emailaddress
 	protected $passwordcrypt;
 	
 	/**
+	 * Setzt die ID der E-Mail Adressverknüpfung
+	 * @param integer $emailaddress_id
+	 * @return Emailaddress
+	 */
+	protected function setEmailaddressId($emailaddress_id)
+	{
+		$this->emailaddress_id = $emailaddress_id;
+		return $this;
+	}
+	
+	/**
 	 * Gibt die ID der E-Mail Adressverknüpfung zurück
 	 * @return integer
 	 */
@@ -112,13 +123,28 @@ class Emailaddress
 	}
 	
 	/**
+	 * Setzt die Attribute der E-Mail Adressverknüpfung aus dem Array
+	 * @param array $array
+	 * @return Emailaddress
+	 */
+	public function fromArray(array $array)
+	{
+		return $this
+			->setEmailaddressId($array['emailaddress_id'])
+			->setModifiedTimestamp($array['modified'])
+			->setCreatedTimestamp($array['created'])
+			->setAccountId($array['account_id'])
+			->setEmailaddress($array['emailaddress']);
+	}
+	
+	/**
 	 * Gibt die Attribute der E-Mail Adressverknüpfung als Array zurück
 	 * @return array
 	 */
 	public function toArray()
 	{
 		return [
-			'entity' => 'Emailaddress',
+			'__className' => __CLASS__,
 			'emailaddress_id' => $this->getEmailaddressId(),
 			'modified' => $this->getModifiedTimestamp(),
 			'created' => $this->getCreatedTimestamp(),

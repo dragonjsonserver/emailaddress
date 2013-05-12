@@ -32,6 +32,17 @@ class Passwordrequest
 	protected $passwordrequesthash;
 	
 	/**
+	 * Setzt die ID der Passwort vergessen Anfrage
+	 * @param integer $passwordrequest_id
+	 * @return Passwordrequest
+	 */
+	protected function setPasswordrequestId($passwordrequest_id)
+	{
+		$this->passwordrequest_id = $passwordrequest_id;
+		return $this;
+	}
+	
+	/**
 	 * Gibt die ID der Passwort vergessen Anfrage zurück
 	 * @return integer
 	 */
@@ -61,13 +72,26 @@ class Passwordrequest
 	}
 	
 	/**
+	 * Setzt die Attribute der Passwort vergessen Anfrage aus dem Array
+	 * @param array $array
+	 * @return Passwordrequest
+	 */
+	public function fromArray(array $array)
+	{
+		return $this
+			->setPasswordrequestId($array['passwordrequest_id'])
+			->setCreatedTimestamp($array['created'])
+			->setEmailaddressId($array['emailaddress_id']);
+	}
+	
+	/**
 	 * Gibt die Attribute der Passwort vergessen Anfrage als Array zurück
 	 * @return array
 	 */
 	public function toArray()
 	{
 		return [
-			'entity' => 'Passwordrequest',
+			'__className' => __CLASS__,
 			'passwordrequest_id' => $this->getPasswordrequestId(),
 			'created' => $this->getCreatedTimestamp(),
 			'emailaddress_id' => $this->getEmailaddressId(),

@@ -33,6 +33,17 @@ class Validationrequest
 	protected $validationrequesthash;
 	
 	/**
+	 * Setzt die ID der E-Mail Adressvalidierung
+	 * @param integer $validationrequest_id
+	 * @return Validationrequest
+	 */
+	protected function setValidationrequestId($validationrequest_id)
+	{
+		$this->validationrequest_id = $validationrequest_id;
+		return $this;
+	}
+	
+	/**
 	 * Gibt die ID der E-Mail Adressvalidierung zurück
 	 * @return integer
 	 */
@@ -62,13 +73,27 @@ class Validationrequest
 	}
 	
 	/**
+	 * Setzt die Attribute der E-Mail Adressvalidierung aus dem Array
+	 * @param array $array
+	 * @return Validationrequest
+	 */
+	public function fromArray(array $array)
+	{
+		return $this
+			->setValidationrequestId($array['validationrequest_id'])
+			->setModifiedTimestamp($array['modified'])
+			->setCreatedTimestamp($array['created'])
+			->setEmailaddressId($array['emailaddress_id']);
+	}
+	
+	/**
 	 * Gibt die Attribute der E-Mail Adressvalidierung als Array zurück
 	 * @return array
 	 */
 	public function toArray()
 	{
 		return [
-			'entity' => 'Validationrequest',
+			'__className' => __CLASS__,
 			'validationrequest_id' => $this->getValidationrequestId(),
 			'modified' => $this->getModifiedTimestamp(),
 			'created' => $this->getCreatedTimestamp(),
