@@ -28,7 +28,7 @@ class Validationrequest
 		$entityManager = $this->getEntityManager();
 
 		$emailaddress_id = $emailaddress->getEmailaddressId();
-		$validationrequest = $this->getServiceManager()->get('Validationrequest')
+		$validationrequest = $this->getServiceManager()->get('\DragonJsonServerEmailaddress\Service\Validationrequest')
 			->getValidationrequestByEmailaddressId($emailaddress_id, false);
 		if (null === $validationrequest) {
 			$validationrequest = (new \DragonJsonServerEmailaddress\Entity\Validationrequest())
@@ -102,7 +102,7 @@ class Validationrequest
 		if (null === $validationrequest) {
 			throw new \DragonJsonServer\Exception('invalid validationrequesthash', $conditions);
 		}
-		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($validationrequest) {
+		$this->getServiceManager()->get('\DragonJsonServerDoctrine\Service\Doctrine')->transactional(function ($entityManager) use ($validationrequest) {
 			$this->getEventManager()->trigger(
 				(new \DragonJsonServerEmailaddress\Event\ValidateEmailaddress())
 					->setTarget($this)

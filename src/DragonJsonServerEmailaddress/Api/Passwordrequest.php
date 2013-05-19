@@ -25,7 +25,7 @@ class Passwordrequest
 	{
 		$serviceManager = $this->getServiceManager();
 		
-		$serviceManager->get('Passwordrequest')->requestPassword($emailaddress);
+		$serviceManager->get('\DragonJsonServerEmailaddress\Service\Passwordrequest')->requestPassword($emailaddress);
 	}
 	
 	/**
@@ -37,6 +37,6 @@ class Passwordrequest
 	{
 		$serviceManager = $this->getServiceManager();
 		
-		$serviceManager->get('Passwordrequest')->resetPassword($passwordrequesthash, $newpassword);
+		$serviceManager->get('\DragonJsonServerEmailaddress\Service\Passwordrequest')->resetPassword($passwordrequesthash, $newpassword);
 	}
 }

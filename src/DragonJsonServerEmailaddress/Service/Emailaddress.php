@@ -48,7 +48,7 @@ class Emailaddress
 			->setAccountId($account_id)
 			->setEmailaddress($emailaddress)
 			->setPassword($password);
-		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
+		$this->getServiceManager()->get('\DragonJsonServerDoctrine\Service\Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
 			$entityManager->persist($emailaddress);
 			$entityManager->flush();
 			$this->getEventManager()->trigger(
@@ -56,7 +56,7 @@ class Emailaddress
 					->setTarget($this)
 					->setEmailaddress($emailaddress)
 			);
-			$this->getServiceManager()->get('Validationrequest')
+			$this->getServiceManager()->get('\DragonJsonServerEmailaddress\Service\Validationrequest')
 				->createValidationrequest($emailaddress);
 		});
 		return $emailaddress;
@@ -77,7 +77,7 @@ class Emailaddress
 		if (null === $emailaddress) {
 			throw new \DragonJsonServer\Exception('missing emailaddress', ['account_id' => $account_id]);
 		}
-		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
+		$this->getServiceManager()->get('\DragonJsonServerDoctrine\Service\Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
 			$this->getEventManager()->trigger(
 				(new \DragonJsonServerEmailaddress\Event\RemoveEmailaddress())
 					->setTarget($this)
@@ -185,10 +185,10 @@ class Emailaddress
 	{
 		$emailaddress = $this->getEmailaddressByAccountId($account_id);
 		$emailaddress->setEmailaddress($newemailaddress);
-		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
+		$this->getServiceManager()->get('\DragonJsonServerDoctrine\Service\Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
 			$entityManager->persist($emailaddress);
 			$entityManager->flush();
-			$this->getServiceManager()->get('Validationrequest')
+			$this->getServiceManager()->get('\DragonJsonServerEmailaddress\Service\Validationrequest')
 				->createValidationrequest($emailaddress);
 		});
 		return $this;

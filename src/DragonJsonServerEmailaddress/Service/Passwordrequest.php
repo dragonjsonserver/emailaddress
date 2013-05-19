@@ -26,7 +26,7 @@ class Passwordrequest
 	{
 		$entityManager = $this->getEntityManager();
 
-		$emailaddress = $this->getServiceManager()->get('Emailaddress')
+		$emailaddress = $this->getServiceManager()->get('\DragonJsonServerEmailaddress\Service\Emailaddress')
 			->getEmailaddressByEmailaddress($emailaddress);
 		$passwordrequesthash = md5($emailaddress->getEmailaddressId() . microtime(true));
 		$entityManager->persist((new \DragonJsonServerEmailaddress\Entity\Passwordrequest())
@@ -65,8 +65,8 @@ class Passwordrequest
 		if (null === $passwordrequest) {
 			throw new \DragonJsonServer\Exception('invalid passwordrequesthash', $conditions);
 		}
-		$this->getServiceManager()->get('Doctrine')->transactional(function ($entityManager) use ($newpassword, $passwordrequest) {
-			$serviceEmailaddress = $this->getServiceManager()->get('Emailaddress');
+		$this->getServiceManager()->get('\DragonJsonServerDoctrine\Service\Doctrine')->transactional(function ($entityManager) use ($newpassword, $passwordrequest) {
+			$serviceEmailaddress = $this->getServiceManager()->get('\DragonJsonServerEmailaddress\Service\Emailaddress');
 			$emailaddress = $serviceEmailaddress->getEmailaddressByEmailaddressId($passwordrequest->getEmailaddressId());
 			$serviceEmailaddress->changePassword($emailaddress, $newpassword);
 			$entityManager->remove($passwordrequest);

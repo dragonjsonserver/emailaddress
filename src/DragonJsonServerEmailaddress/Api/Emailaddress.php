@@ -25,7 +25,7 @@ class Emailaddress
 	{
 		$serviceManager = $this->getServiceManager();
 		
-		$serviceEmailaddress = $serviceManager->get('Emailaddress');
+		$serviceEmailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress');
 		$serviceEmailaddress->validateEmailaddress($emailaddress);
 		if (null !== $serviceEmailaddress->getEmailaddressByEmailaddress($emailaddress, false)) {
 			throw new \DragonJsonServer\Exception('emailaddress not unique', ['emailaddress' => $emailaddress]);
@@ -43,9 +43,9 @@ class Emailaddress
 		$this->validateEmailaddress($emailaddress);
 		$serviceManager = $this->getServiceManager();
 
-		$sessionService = $serviceManager->get('Session');
+		$sessionService = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
 		$session = $sessionService->getSession();
-		$emailaddress = $serviceManager->get('Emailaddress')->createEmailaddress($session->getAccountId(), $emailaddress, $password);
+		$emailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')->createEmailaddress($session->getAccountId(), $emailaddress, $password);
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();
 		$sessionService->changeData($session, $data);
@@ -60,9 +60,9 @@ class Emailaddress
 	{
 		$serviceManager = $this->getServiceManager();
 
-		$sessionService = $serviceManager->get('Session');
+		$sessionService = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
 		$session = $sessionService->getSession();
-		$serviceManager->get('Emailaddress')->removeEmailaddress($session->getAccountId());
+		$serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')->removeEmailaddress($session->getAccountId());
 		$data = $session->getData();
 		unset($data['emailaddress']);
 		$sessionService->changeData($session, $data);
@@ -78,9 +78,9 @@ class Emailaddress
 	{
 		$serviceManager = $this->getServiceManager();
 
-		$emailaddress = $serviceManager->get('Emailaddress')
+		$emailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')
 			->getEmailaddressByEmailaddressAndPassword($emailaddress, $password);
-		$serviceSession = $serviceManager->get('Session');
+		$serviceSession = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
 		$session = $serviceSession->createSession($emailaddress->getAccountId(), ['emailaddress' => $emailaddress->toArray()]);
 		$serviceSession->setSession($session);
 		return $session->toArray();
@@ -95,8 +95,8 @@ class Emailaddress
 	{
 		$serviceManager = $this->getServiceManager();
 		
-		$session = $serviceManager->get('Session')->getSession();
-		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId(), false);
+		$session = $serviceManager->get('\DragonJsonServerAccount\Service\Session')->getSession();
+		$emailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')->getEmailaddressByAccountId($session->getAccountId(), false);
 		if (null !== $emailaddress) {
 			return $emailaddress->toArray();
 		}
@@ -113,9 +113,9 @@ class Emailaddress
 		$this->validateEmailaddress($newemailaddress);
 		$serviceManager = $this->getServiceManager();
 		
-		$sessionService = $serviceManager->get('Session');
+		$sessionService = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
 		$session = $sessionService->getSession();
-		$serviceManager->get('Emailaddress')->changeEmailaddress(
+		$serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')->changeEmailaddress(
 			$session->getAccountId(), 
 			$newemailaddress
 		);
@@ -135,9 +135,9 @@ class Emailaddress
 	{
 		$serviceManager = $this->getServiceManager();
 		
-		$sessionService = $serviceManager->get('Session');
+		$sessionService = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
 		$session = $sessionService->getSession();
-		$serviceEmailaddress = $serviceManager->get('Emailaddress'); 
+		$serviceEmailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress'); 
 		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($session->getAccountId());
 		$serviceEmailaddress->changePassword($emailaddress, $newpassword);
 	}

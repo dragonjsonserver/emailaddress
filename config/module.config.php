@@ -31,9 +31,9 @@ return [
     ],
 	'service_manager' => [
 		'invokables' => [
-            'Emailaddress' => '\DragonJsonServerEmailaddress\Service\Emailaddress',
-            'Passwordrequest' => '\DragonJsonServerEmailaddress\Service\Passwordrequest',
-            'Validationrequest' => '\DragonJsonServerEmailaddress\Service\Validationrequest',
+            '\DragonJsonServerEmailaddress\Service\Emailaddress' => '\DragonJsonServerEmailaddress\Service\Emailaddress',
+            '\DragonJsonServerEmailaddress\Service\Passwordrequest' => '\DragonJsonServerEmailaddress\Service\Passwordrequest',
+            '\DragonJsonServerEmailaddress\Service\Validationrequest' => '\DragonJsonServerEmailaddress\Service\Validationrequest',
 		],
 	],
 	'doctrine' => [

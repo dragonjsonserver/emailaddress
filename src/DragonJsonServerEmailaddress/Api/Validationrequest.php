@@ -25,9 +25,9 @@ class Validationrequest
 	{
 		$serviceManager = $this->getServiceManager();
 	
-		$session = $serviceManager->get('Session')->getSession();
-		$emailaddress = $serviceManager->get('Emailaddress')->getEmailaddressByAccountId($session->getAccountId());
-		$validationrequest = $serviceManager->get('Validationrequest')
+		$session = $serviceManager->get('\DragonJsonServerAccount\Service\Session')->getSession();
+		$emailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')->getEmailaddressByAccountId($session->getAccountId());
+		$validationrequest = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Validationrequest')
 			->getValidationrequestByEmailaddressId($emailaddress->getEmailaddressId(), false); 
 		if (null !== $validationrequest) {
 			return $validationrequest->toArray();
@@ -43,10 +43,10 @@ class Validationrequest
 	{
 		$serviceManager = $this->getServiceManager();
 
-		$session = $serviceManager->get('Session')->getSession();
-		$serviceEmailaddress = $serviceManager->get('Emailaddress');
+		$session = $serviceManager->get('\DragonJsonServerAccount\Service\Session')->getSession();
+		$serviceEmailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress');
 		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($session->getAccountId());
-		$serviceValidationrequest = $serviceManager->get('Validationrequest');
+		$serviceValidationrequest = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Validationrequest');
 		$validationrequest = $serviceValidationrequest->getValidationrequestByEmailaddressId($emailaddress->getEmailaddressId());
 		$serviceValidationrequest->sendValidationrequest($emailaddress, $validationrequest);
 	}
@@ -59,6 +59,6 @@ class Validationrequest
 	{
 		$serviceManager = $this->getServiceManager();
 
-		$serviceManager->get('Validationrequest')->validateEmailaddress($validationrequesthash);
+		$serviceManager->get('\DragonJsonServerEmailaddress\Service\Validationrequest')->validateEmailaddress($validationrequesthash);
 	}
 }
