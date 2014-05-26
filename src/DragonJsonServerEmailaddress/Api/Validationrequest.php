@@ -48,7 +48,7 @@ class Validationrequest
 		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($session->getAccountId());
 		$serviceValidationrequest = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Validationrequest');
 		$validationrequest = $serviceValidationrequest->getValidationrequestByEmailaddressId($emailaddress->getEmailaddressId());
-		$serviceValidationrequest->sendValidationrequest($emailaddress, $validationrequest);
+		$serviceValidationrequest->sendValidationrequest($emailaddress, $validationrequest, $session->getData()['account']['language']);
 	}
 	
 	/**

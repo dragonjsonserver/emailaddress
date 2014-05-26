@@ -20,28 +20,30 @@ class Passwordrequest
 	/**
 	 * Sendet eine E-Mail mit dem Hash zum Zurücksetzen des Passwortes
 	 * @param string $emailaddress
+	 * @param string $language
 	 * @return Passwordrequest
 	 */
-	public function requestPassword($emailaddress)
+	public function requestPassword($emailaddress, $language)
 	{
+        $serviceManager = $this->getServiceManager();
 		$entityManager = $this->getEntityManager();
 
-		$emailaddress = $this->getServiceManager()->get('\DragonJsonServerEmailaddress\Service\Emailaddress')
+		$emailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')
 			->getEmailaddressByEmailaddress($emailaddress);
 		$passwordrequesthash = md5($emailaddress->getEmailaddressId() . microtime(true));
 		$entityManager->persist((new \DragonJsonServerEmailaddress\Entity\Passwordrequest())
 			->setEmailaddressId($emailaddress->getEmailaddressId())
 			->setPasswordrequesthash($passwordrequesthash));
 		$entityManager->flush();
-		$config = $this->getServiceManager()->get('Config')['dragonjsonserveremailaddress'];
+        $serviceTranslate = $serviceManager->get('translator');
 		$message = (new \Zend\Mail\Message())
 			->addTo($emailaddress->getEmailaddress())
-	        ->addFrom($config['from'])
-	        ->setSubject($config['passwordrequest']['subject'])
+	        ->addFrom($serviceManager->get('Config')['dragonjsonserveremailaddress']['from'])
+	        ->setSubject($serviceTranslate->translate('passwordrequest.subject', 'dragonjsonserveremailaddress', $language))
 	        ->setBody(str_replace(
 	        	'%passwordrequesthash%', 
-	        	$passwordrequesthash, 
-	        	$config['passwordrequest']['body']
+	        	$passwordrequesthash,
+                $serviceTranslate->translate('passwordrequest.body', 'dragonjsonserveremailaddress', $language)
 	        ));
 		(new \Zend\Mail\Transport\Sendmail())->send($message);
 		return $this;

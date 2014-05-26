@@ -16,7 +16,8 @@
         "zendframework/zendframework": "2.*",
         "dragonprojects/dragonjsonserver": "dev-master",
         "dragonprojects/dragonjsonserverdoctrine": "dev-master",
-        "dragonprojects/dragonjsonserveraccount": "dev-master"
+        "dragonprojects/dragonjsonserveraccount": "dev-master",
+        "dragonprojects/dragonjsonserveri18n": "dev-master"
     },
     "autoload": {
         "psr-0": {

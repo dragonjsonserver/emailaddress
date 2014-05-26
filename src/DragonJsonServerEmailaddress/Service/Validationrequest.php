@@ -21,9 +21,10 @@ class Validationrequest
 	/**
 	 * Erstellt eine Anfrage für eine E-Mail Adressvalidierung
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
+     * @param string $language
 	 * @return Validationrequest
 	 */
-	public function createValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress)
+	public function createValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress, $language)
 	{
 		$entityManager = $this->getEntityManager();
 
@@ -37,7 +38,7 @@ class Validationrequest
 			$entityManager->persist($validationrequest);
 			$entityManager->flush();
 		}
-		$this->sendValidationrequest($emailaddress, $validationrequest);
+		$this->sendValidationrequest($emailaddress, $validationrequest, $language);
 		return $this;
 	}
 	
@@ -45,20 +46,24 @@ class Validationrequest
 	 * Sendet die E-Mail Adressvalidierung
 	 * @param \DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress
 	 * @param \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest
+	 * @param string $language
 	 * @return Validationrequest
 	 */
 	public function sendValidationrequest(\DragonJsonServerEmailaddress\Entity\Emailaddress $emailaddress,
-										  \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest)
+										  \DragonJsonServerEmailaddress\Entity\Validationrequest $validationrequest,
+                                          $language)
 	{
-		$config = $this->getServiceManager()->get('Config')['dragonjsonserveremailaddress'];
+        $serviceManager = $this->getServiceManager();
+
+        $serviceTranslate = $serviceManager->get('translator');
 		$message = (new \Zend\Mail\Message())
 			->addTo($emailaddress->getEmailaddress())
-			->addFrom($config['from'])
-			->setSubject($config['validationrequest']['subject'])
+			->addFrom($serviceManager->get('Config')['dragonjsonserveremailaddress']['from'])
+			->setSubject($serviceTranslate->translate('validationrequest.subject', 'dragonjsonserveremailaddress', $language))
 			->setBody(str_replace(
-					'%validationrequesthash%',
-					$validationrequest->getValidationrequesthash(),
-					$config['validationrequest']['body']
+                '%validationrequesthash%',
+                $validationrequest->getValidationrequesthash(),
+                $serviceTranslate->translate('validationrequest.body', 'dragonjsonserveremailaddress', $language)
 			));
 		(new \Zend\Mail\Transport\Sendmail())->send($message);
 		return $this;

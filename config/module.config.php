@@ -13,14 +13,6 @@
 return [
 	'dragonjsonserveremailaddress' => [
 		'from' => 'noreply@dragonjsonserver.de',
-		'validationrequest' => [
-			'subject' => 'validationrequest',
-			'body' => '%validationrequesthash%',
-		],
-		'passwordrequest' => [
-			'subject' => 'passwordrequest',
-			'body' => '%passwordrequesthash%',
-		],
 	],
 	'dragonjsonserver' => [
 	    'apiclasses' => [
@@ -52,4 +44,14 @@ return [
 			],
 		],
 	],
+    'translator' => [
+        'translation_file_patterns' => [
+            [
+                'type' => 'phparray',
+                'base_dir' => __DIR__ . '/../language/dragonjsonserveremailaddress',
+                'pattern' => '%s.php',
+                'text_domain' => 'dragonjsonserveremailaddress',
+            ],
+        ],
+    ],
 ];

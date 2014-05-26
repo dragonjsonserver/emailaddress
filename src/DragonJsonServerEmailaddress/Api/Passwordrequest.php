@@ -19,13 +19,15 @@ class Passwordrequest
 	/**
 	 * Sendet eine E-Mail mit dem Hash zum Zurücksetzen des Passwortes
 	 * @param string $emailaddress
+	 * @param string $language
 	 * @throws \DragonJsonServer\Exception
 	 */
-	public function requestPassword($emailaddress)
+	public function requestPassword($emailaddress, $language)
 	{
 		$serviceManager = $this->getServiceManager();
 		
-		$serviceManager->get('\DragonJsonServerEmailaddress\Service\Passwordrequest')->requestPassword($emailaddress);
+		$serviceManager->get('\DragonJsonServerEmailaddress\Service\Passwordrequest')
+            ->requestPassword($emailaddress, $language);
 	}
 	
 	/**
