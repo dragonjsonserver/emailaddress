@@ -43,12 +43,12 @@ class Emailaddress
 		$this->validateEmailaddress($emailaddress);
 		$serviceManager = $this->getServiceManager();
 
-		$sessionService = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
-		$session = $sessionService->getSession();
+        $serviceSession = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
+		$session = $serviceSession->getSession();
 		$emailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')->createEmailaddress($session->getAccountId(), $emailaddress, $password);
 		$data = $session->getData();
 		$data['emailaddress'] = $emailaddress->toArray();
-		$sessionService->changeData($session, $data);
+        $serviceSession->changeData($session, $data);
 		return $emailaddress->toArray();
 	}
 	
@@ -60,12 +60,12 @@ class Emailaddress
 	{
 		$serviceManager = $this->getServiceManager();
 
-		$sessionService = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
-		$session = $sessionService->getSession();
+        $serviceSession = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
+		$session = $serviceSession->getSession();
 		$serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')->removeEmailaddress($session->getAccountId());
 		$data = $session->getData();
 		unset($data['emailaddress']);
-		$sessionService->changeData($session, $data);
+        $serviceSession->changeData($session, $data);
 	}
 	
     /**
@@ -112,9 +112,9 @@ class Emailaddress
 	{
 		$this->validateEmailaddress($newemailaddress);
 		$serviceManager = $this->getServiceManager();
-		
-		$sessionService = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
-		$session = $sessionService->getSession();
+
+        $serviceSession = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
+		$session = $serviceSession->getSession();
 		$serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress')->changeEmailaddress(
 			$session->getAccountId(), 
 			$newemailaddress
@@ -122,7 +122,7 @@ class Emailaddress
 		$data = $session->getData();
 		if (isset($data['emailaddress'])) {
 			$data['emailaddress']['emailaddress'] = $newemailaddress;
-			$sessionService->changeData($session, $data);
+            $serviceSession->changeData($session, $data);
 		}
 	}
 	
@@ -134,9 +134,9 @@ class Emailaddress
 	public function changePassword($newpassword)
 	{
 		$serviceManager = $this->getServiceManager();
-		
-		$sessionService = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
-		$session = $sessionService->getSession();
+
+        $serviceSession = $serviceManager->get('\DragonJsonServerAccount\Service\Session');
+		$session = $serviceSession->getSession();
 		$serviceEmailaddress = $serviceManager->get('\DragonJsonServerEmailaddress\Service\Emailaddress'); 
 		$emailaddress = $serviceEmailaddress->getEmailaddressByAccountId($session->getAccountId());
 		$serviceEmailaddress->changePassword($emailaddress, $newpassword);
