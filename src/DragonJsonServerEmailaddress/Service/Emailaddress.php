@@ -49,7 +49,7 @@ class Emailaddress
 			->setAccountId($account_id)
 			->setEmailaddress($emailaddress)
 			->setPassword($password);
-		$this->getServiceManager()->get('\DragonJsonServerDoctrine\Service\Doctrine')->transactional(function ($entityManager) use ($emailaddress) {
+		$this->getServiceManager()->get('\DragonJsonServerDoctrine\Service\Doctrine')->transactional(function ($entityManager) use ($emailaddress, $language) {
 			$entityManager->persist($emailaddress);
 			$entityManager->flush();
 			$this->getEventManager()->trigger(
